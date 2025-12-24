@@ -2,11 +2,24 @@ import portfolioImage from '../../assets/portfolio.svg';
 
 import './Header.css';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    title?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ title = "Dashboard Stock Trading"}) => {
     return (
-        <header>
-            <h1><a href='#'>IA Dashboard Previsões de Ações</a></h1>
-            <img src={portfolioImage} alt="Logo site" />
+        <header className='main-header'>
+            <div className="logo">
+                <h1>{title}</h1>
+                <img src={portfolioImage} alt='logomarca' />
+            </div>
+            <nav className="nav-menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
         </header>
     )
 }
