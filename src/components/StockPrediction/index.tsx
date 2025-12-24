@@ -61,9 +61,9 @@ const StockPrediction: React.FC = () => {
             <div className='prediction-result'>
                 <h2>{data.ticker}</h2>
 
-                <div className={`prediction-badge ${prediction.toString().toLowerCase()}`}>
+                <div className={`prediction-badge ${prediction.toLowerCase()}`}>
                     <span className="prediction-label">{prediction}</span>
-                    <span className="confidence">{(confidence * 100).toFixed(2)}</span>
+                    <span className="confidence">{(confidence * 100).toFixed(2)}%</span>
                 </div>
                 <div className="metric">
                     <label>Variação de Preço</label>

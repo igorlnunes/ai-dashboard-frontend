@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { getPrediction, type PredictionData } from "../services/apiService";
+import { getPrediction } from "../services/apiService";
+import type { PredictionData } from "../types/api";
 
 export const usePrediction = (ticker: string) => {
     const [data, setData] = useState<PredictionData | null>(null);

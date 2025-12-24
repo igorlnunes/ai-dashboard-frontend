@@ -1,0 +1,272 @@
+.stock-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    width: 100%;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stock-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 1);
+}
+
+.stock-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.stock-info {
+    flex: 1;
+}
+
+.stock-ticker {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.stock-name {
+    margin: 6px 0 0 0;
+    font-size: 16px;
+    color: #666;
+    font-weight: 400;
+}
+
+.live-badge {
+    background: #4CAF50;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.stock-price-section {
+    margin-bottom: 20px;
+}
+
+.stock-price {
+    font-size: 40px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+}
+
+.stock-change {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.stock-change.positive {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.stock-change.negative {
+    color: #c62828;
+    font-weight: 600;
+}
+
+.sparkline-wrapper {
+    margin-top: 12px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ai-prediction-section {
+    margin-bottom: 20px;
+}
+
+.prediction-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.prediction-bar-container {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.prediction-bar {
+    position: relative;
+    height: 48px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    background: #f5f5f5;
+}
+
+.prediction-segment {
+    height: 100%;
+}
+
+.sell-segment {
+    background: #f44336;
+}
+
+.hold-segment {
+    background: #ff9800;
+}
+
+.buy-segment {
+    background: #4CAF50;
+}
+
+.prediction-indicator {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.prediction-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid;
+    margin-bottom: 2px;
+}
+
+.prediction-indicator.sell .prediction-arrow {
+    border-bottom-color: #f44336;
+}
+
+.prediction-indicator.hold .prediction-arrow {
+    border-bottom-color: #ff9800;
+}
+
+.prediction-indicator.buy .prediction-arrow {
+    border-bottom-color: #4CAF50;
+}
+
+.prediction-button {
+    background: white;
+    color: #1a1a1a;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid;
+}
+
+.prediction-indicator.sell .prediction-button {
+    border-color: #f44336;
+    color: #f44336;
+}
+
+.prediction-indicator.hold .prediction-button {
+    border-color: #ff9800;
+    color: #ff9800;
+}
+
+.prediction-indicator.buy .prediction-button {
+    border-color: #4CAF50;
+    color: #4CAF50;
+}
+
+.prediction-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #666;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.prediction-ranges {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.confidence-section {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.confidence-value {
+    font-size: 14px;
+    color: #666;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.confidence-icon {
+    font-size: 16px;
+}
+
+.prediction-context {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.stock-metrics {
+    display: flex;
+    gap: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+.metric-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.volatility-baixa {
+    color: #4CAF50;
+}
+
+.volatility-média {
+    color: #ff9800;
+}
+
+.volatility-alta {
+    color: #f44336;
+}
+
