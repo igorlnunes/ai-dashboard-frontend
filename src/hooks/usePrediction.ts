@@ -1,6 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react"; // Adicione useEffect
 import { getPrediction, type PredictionData } from "../services/apiService";
 
+
+// Hook realiza chamada API
 export const usePrediction = (ticker: string) => {
     const [data, setData] = useState<PredictionData | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -11,16 +13,26 @@ export const usePrediction = (ticker: string) => {
 
         setLoading(true);
         setError(null);
+        console.log("📡 Hook: Iniciando chamada para", ticker);
 
         try {
             const result = await getPrediction(ticker);
             setData(result);
+            console.log("✅ Hook: Dados recebidos", result);
         } catch (err: any) {
             setError(err.message || 'Erro desconhecido');
+            console.error("❌ Hook: Erro na API", err);
         } finally {
             setLoading(false);
         }
     }, [ticker]);
+
+    // Fetch do ticker
+    useEffect(() => {
+        if (ticker) {
+            fetchPrediction();
+        }
+    }, [ticker, fetchPrediction]); 
 
     return {
         data, 
