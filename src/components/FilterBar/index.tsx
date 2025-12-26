@@ -67,3 +67,4 @@ const FilterBar: React.FC<FilterBarProps> = ({ sortBy, filterBy, onSortChange, o
 
 export default FilterBar;
 
+

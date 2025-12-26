@@ -35,3 +35,4 @@ export const getCompanyName = (ticker: string): string | undefined => {
     return COMPANY_NAMES[ticker.toUpperCase()];
 };
 
+
