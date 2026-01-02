@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
 import './App.css';
-import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import FilterBar, { type SortOption, type FilterOption } from './components/FilterBar';
 import StockGrid from './components/StockGrid';
@@ -46,7 +45,6 @@ function App() {
 
   return (
     <div className='screen-w'>
-      <Header />
       <SearchBar onSearchClick={handleSearchClick} />
       {stocks.length > 0 && (
         <FilterBar 
