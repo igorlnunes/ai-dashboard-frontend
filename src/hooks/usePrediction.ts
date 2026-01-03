@@ -1,5 +1,6 @@
-import { useCallback, useState, useEffect } from "react"; // Adicione useEffect
-import { getPrediction, type PredictionData } from "../services/apiService";
+import { useCallback, useEffect, useState } from "react";
+import { getPrediction } from "../services/apiService";
+import type { PredictionData } from "../types/api";
 
 
 // Hook realiza chamada API
