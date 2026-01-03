@@ -1,9 +1,10 @@
 // environment.d.ts or react-app-env.d.ts
-declare namespace NodeJS {
-  interface ProcessEnv {
-    readonly REACT_APP_API_URL: string;
-    // Add other variables here as needed
-  }
+interface ImportMetaEnv {
+  readonly VITE_APP_API_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
 }
 
 // To ensure this file is treated as a module, add an empty export statement
