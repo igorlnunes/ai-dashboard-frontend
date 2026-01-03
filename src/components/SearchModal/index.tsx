@@ -1,125 +1,165 @@
-import React, { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
-import { usePrediction } from '../../hooks/usePrediction';
-import { getTickerInfo } from '../../services/apiService';
-import { getPERatio, getCompanyName } from '../../utils/stockData';
-import StockCard from '../StockCard';
-import './SearchModal.css';
+import { useState, useEffect, type FormEvent, type ChangeEvent } from "react";
+import { usePrediction } from "../../hooks/usePrediction";
+import { getTickerInfo } from "../../services/apiService";
+import { getPERatio, getCompanyName } from "../../utils/stockData";
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+import { Search, Loader2, AlertCircle, Plus } from "lucide-react";
+import { StockCard } from "../StockCard";
 
 interface SearchModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onAddStock: (data: any) => void;
+  isOpen: boolean;
+  onClose: () => void;
+  onAddStock: (data: any) => void;
 }
 
-const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onAddStock }) => {
-    const [ticker, setTicker] = useState<string>('AAPL');
-    const [searchTicker, setSearchTicker] = useState<string>('');
-    const { data, loading, error, refetch } = usePrediction(ticker);
+export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModalProps) {
+  const [ticker, setTicker] = useState("AAPL");
+  const [searchTicker, setSearchTicker] = useState("");
 
-    useEffect(() => {
-        if (ticker && ticker !== 'AAPL') {
-            refetch();
-        }
-    }, [ticker, refetch]);
+  const { data, loading, error, refetch } = usePrediction(ticker);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        if (searchTicker.trim()) {
-            setTicker(searchTicker.toUpperCase());
-        }
-    };
+  useEffect(() => {
+    if (ticker && ticker !== "AAPL") {
+      refetch();
+    }
+  }, [ticker, refetch]);
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setSearchTicker(e.target.value.toUpperCase());
-    };
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchTicker.trim()) {
+      setTicker(searchTicker.toUpperCase());
+    }
+  };
 
-    const handleAddStock = async (): Promise<void> => {
-        if (data) {
-            try {
-                // Tentar buscar informações do ticker
-                let tickerInfo = null;
-                try {
-                    tickerInfo = await getTickerInfo(data.ticker);
-                } catch (err) {
-                    // Se falhar, usar dados locais
-                }
-            
-                onAddStock({
-                    data,
-                    // Priorizar dados da API
-                    companyName: tickerInfo?.name || getCompanyName(data.ticker) || undefined,
-                    // P/E ratio: usar apenas se a API fornecer
-                    peRatio: tickerInfo && 'pe_ratio' in tickerInfo 
-                        ? (tickerInfo as any).pe_ratio 
-                        : getPERatio(data.ticker) || undefined,
-                });
-                setSearchTicker('');
-                setTicker('AAPL');
-                onClose();
-            } catch (err) {
-                console.error('Erro ao adicionar ação:', err);
-            }
-        }
-    };
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTicker(e.target.value.toUpperCase());
+  };
 
-    const handleClose = (): void => {
-        setSearchTicker('');
-        setTicker('AAPL');
-        onClose();
-    };
+  const handleAddStock = async () => {
+    if (!data) return;
 
-    if (!isOpen) return null;
+    try {
+      let tickerInfo = null;
 
-    return (
-        <div className="modal-overlay" onClick={handleClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
-                    <h2>Buscar Ação</h2>
-                    <button className="modal-close" onClick={handleClose}>×</button>
-                </div>
-                
-                <form onSubmit={handleSubmit} className="modal-form">
-                    <input
-                        type="text"
-                        value={searchTicker}
-                        onChange={handleInputChange}
-                        placeholder="Digite o ticker (ex: AAPL, TSLA, GOOGL)"
-                        className="modal-input"
-                        autoFocus
-                    />
-                    <button type="submit" className="modal-submit" disabled={loading || !searchTicker.trim()}>
-                        {loading ? 'Buscando...' : 'Buscar'}
-                    </button>
-                </form>
+      try {
+        tickerInfo = await getTickerInfo(data.ticker);
+      } catch {
+        // fallback silencioso
+      }
 
-                {error && (
-                    <div className="modal-error">
-                        ❌ Erro: {error}
-                    </div>
-                )}
+      onAddStock({
+        data,
+        companyName:
+          tickerInfo?.name ||
+          getCompanyName(data.ticker) ||
+          undefined,
+        peRatio:
+          tickerInfo && "pe_ratio" in tickerInfo
+            ? (tickerInfo as any).pe_ratio
+            : getPERatio(data.ticker) || undefined,
+      });
 
-                {loading && (
-                    <div className="modal-loading">
-                        🔄 Carregando predição...
-                    </div>
-                )}
+      setSearchTicker("");
+      setTicker("AAPL");
+      onClose();
+    } catch (err) {
+      console.error("Erro ao adicionar ação:", err);
+    }
+  };
 
-                {data && !loading && (
-                    <div className="modal-result">
-                        <StockCard
-                            data={data}
-                            companyName={undefined}
-                            peRatio={undefined}
-                        />
-                        <button className="modal-add-button" onClick={handleAddStock}>
-                            Adicionar à Lista
-                        </button>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-};
+  const handleClose = () => {
+    setSearchTicker("");
+    setTicker("AAPL");
+    onClose();
+  };
 
-export default SearchModal;
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="max-w-3xl
+                                bg-background 
+                                text-foreground 
+                                z-50 
+                                pointer-events-auto
+      ">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Search className="h-5 w-5 text-primary" />
+            Buscar Ação
+          </DialogTitle>
+        </DialogHeader>
 
+        {/* Formulário */}
+        <form onSubmit={handleSubmit} className="flex gap-2">
+          <Input
+            autoFocus
+            value={searchTicker}
+            onChange={handleInputChange}
+            placeholder="Digite o ticker (ex: AAPL, TSLA, GOOGL)"
+          />
+
+          <Button
+            type="submit"
+            disabled={loading || !searchTicker.trim()}
+            className="gap-2"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Buscando
+              </>
+            ) : (
+              "Buscar"
+            )}
+          </Button>
+        </form>
+
+        {/* Erro */}
+        {error && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Erro ao buscar ticker: {error}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Loading */}
+        {loading && (
+          <div className="flex items-center justify-center py-10 text-muted-foreground gap-2">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Carregando predição...
+          </div>
+        )}
+
+        {/* Resultado */}
+        {data && !loading && (
+          <div className="space-y-4 pt-4">
+            <Card>
+              <CardContent className="p-4">
+                <StockCard
+                  data={data}
+                  companyName={undefined}
+                  peRatio={undefined}
+                />
+              </CardContent>
+            </Card>
+
+            <Button
+              onClick={handleAddStock}
+              className="w-full gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Adicionar à Lista
+            </Button>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}

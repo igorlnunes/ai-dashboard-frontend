@@ -1,50 +1,79 @@
-import React from 'react';
-import StockCard from '../StockCard';
-import type { PredictionData } from '../../types/api';
-import './StockGrid.css';
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { RefreshCw, TrendingUp } from "lucide-react";
+import type { PredictionData } from "../../types/api";
+import { StockCard } from "../StockCard";
 
 interface StockGridProps {
-    stocks: Array<{
-        data: PredictionData;
-        companyName?: string;
-        peRatio?: number;
-    }>;
-    loading?: boolean;
+  stocks: Array<{
+    data: PredictionData;
+    companyName?: string;
+    peRatio?: number;
+  }>;
+  loading?: boolean;
 }
 
-const StockGrid: React.FC<StockGridProps> = ({ stocks, loading }) => {
-    if (loading) {
-        return (
-            <div className="stock-grid-loading">
-                <div className="loading-spinner">🔄 Carregando ações...</div>
-            </div>
-        );
-    }
-
-    if (stocks.length === 0 && !loading) {
-        return (
-            <div className="stock-grid-empty">
-                <p>Nenhuma ação encontrada. Use a busca para adicionar ações.</p>
-                <p style={{ fontSize: '14px', color: '#999', marginTop: '8px' }}>
-                    Verifique se o backend está rodando em http://localhost:8000
-                </p>
-            </div>
-        );
-    }
-
+export default function StockGrid({ stocks, loading }: StockGridProps) {
+  /* ---------------- Loading ---------------- */
+  if (loading) {
     return (
-        <div className="stock-grid">
-            {stocks.map((stock, index) => (
-                <StockCard
-                    key={`${stock.data.ticker}-${index}`}
-                    data={stock.data}
-                    companyName={stock.companyName}
-                    peRatio={stock.peRatio}
-                />
-            ))}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Card key={i} className="p-6 space-y-4">
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-10 w-32" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-8 w-1/2" />
+          </Card>
+        ))}
+      </div>
     );
-};
+  }
 
-export default StockGrid;
+  /* ---------------- Empty State ---------------- */
+  if (!loading && stocks.length === 0) {
+    return (
+      <div className="flex justify-center items-center p-12">
+        <Card className="max-w-md w-full text-center">
+          <CardContent className="p-10 space-y-4">
+            <div className="mx-auto w-fit rounded-full bg-muted p-4">
+              <TrendingUp className="h-8 w-8 text-muted-foreground" />
+            </div>
 
+            <h3 className="text-lg font-bold">
+              Nenhuma ação encontrada
+            </h3>
+
+            <p className="text-sm text-muted-foreground">
+              Use a busca para adicionar ações ao painel.
+            </p>
+
+            <p className="text-xs text-muted-foreground italic">
+              Verifique se o backend está rodando em
+              <br />
+              <span className="font-mono text-primary">
+                http://localhost:8000
+              </span>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  /* ---------------- Grid ---------------- */
+  return (
+    <div className="p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {stocks.map((stock, index) => (
+          <StockCard
+            key={`${stock.data.ticker}-${index}`}
+            data={stock.data}
+            companyName={stock.companyName}
+            peRatio={stock.peRatio}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
