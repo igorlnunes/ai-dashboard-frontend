@@ -1,32 +1,5 @@
-<<<<<<< HEAD
-import { useState } from "react";
-import { StockDisplay } from "./components/StockDisplay";
-import Header from "./components/Header";
-import { usePrediction } from "./hooks/usePrediction";
-
-export default function App() {
-  
-  const [activeTicker, setActiveTicker] = useState<string>("");
-   const { data, loading, error, refetch } = usePrediction(activeTicker);
-
-  return (
-    <div className="min-h-screen bg-background">
-      <Header onSearch={(ticker: any) => setActiveTicker(ticker)} />
-      
-      <main className="container mx-auto">
-        <StockDisplay
-          data={data} 
-          loading={loading} 
-          error={error} 
-          onRetry={refetch}
-        />
-      </main>
-    </div>
-  );
-}
-=======
 import { useEffect, useState, useMemo } from "react";
-
+import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import FilterBar, {
   type SortOption,
@@ -42,7 +15,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 
-function App() {
+export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("ticker-asc");
   const [filterBy, setFilterBy] = useState<FilterOption>("all");
@@ -70,6 +43,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
         {/* Barra de busca */}
         <SearchBar onSearchClick={() => setIsModalOpen(true)} />
@@ -112,6 +86,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
->>>>>>> feature/dashboard-com-filtros-sparklines

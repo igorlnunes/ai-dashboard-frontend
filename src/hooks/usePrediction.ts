@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import { useCallback, useState, useEffect } from "react"; // Adicione useEffect
-import { getPrediction, type PredictionData } from "../services/apiService";
-=======
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getPrediction } from "../services/apiService";
 import type { PredictionData } from "../types/api";
->>>>>>> feature/dashboard-com-filtros-sparklines
 
 
 // Hook realiza chamada API
