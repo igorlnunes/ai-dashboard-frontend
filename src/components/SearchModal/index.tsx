@@ -19,13 +19,13 @@ interface SearchModalProps {
 }
 
 export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModalProps) {
-  const [ticker, setTicker] = useState("AAPL");
+  const [ticker, setTicker] = useState("GOOGL");
   const [searchTicker, setSearchTicker] = useState("");
 
   const { data, loading, error, refetch } = usePrediction(ticker);
 
   useEffect(() => {
-    if (ticker && ticker !== "AAPL") {
+    if (ticker) {
       refetch();
     }
   }, [ticker, refetch]);
@@ -75,7 +75,7 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
   const handleClose = () => {
     setSearchTicker("");
-    setTicker("AAPL");
+    setTicker("TSLA");
     onClose();
   };
 

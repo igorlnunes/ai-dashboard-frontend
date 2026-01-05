@@ -1,3 +1,10 @@
+# TODO
+[] Criar um componente de loading para 
+[] Estilizar modal "Buscar Ação" para o mesmo estilo do site
+[] Otimizar as requisições a API ao carregar a página
+
+
+
 # AI Stock Project - Front-End
 
 Este é o front-end do **AI Stock Project**, uma aplicação desenvolvida para prever o comportamento de ações utilizando inteligência artificial. Este projeto visa fornecer uma interface intuitiva para visualizar previsões de ações e interagir com o sistema de IA.
