@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 import { Search, Loader2, AlertCircle, Plus } from "lucide-react";
 import { StockCard } from "../StockCard";
@@ -39,6 +40,11 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTicker(e.target.value.toUpperCase());
+  };
+
+  const handleDropdownChange = (value: string) => {
+    setTicker(value);
+    setSearchTicker(value);
   };
 
   const handleAddStock = async () => {
@@ -81,12 +87,7 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-3xl
-                                bg-background 
-                                text-foreground 
-                                z-50 
-                                pointer-events-auto
-      ">
+      <DialogContent className="max-w-3xl bg-background text-foreground z-50 pointer-events-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Search className="h-5 w-5 text-primary" />
@@ -95,13 +96,28 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
         </DialogHeader>
 
         {/* Formulário */}
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-2 items-center">
           <Input
             autoFocus
             value={searchTicker}
             onChange={handleInputChange}
             placeholder="Digite o ticker (ex: AAPL, TSLA, GOOGL)"
+            className="flex-1"
           />
+
+          <Select onValueChange={handleDropdownChange}>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Populares" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="AAPL">Apple (AAPL)</SelectItem>
+              <SelectItem value="TSLA">Tesla (TSLA)</SelectItem>
+              <SelectItem value="GOOGL">Google (GOOGL)</SelectItem>
+              <SelectItem value="MSFT">Microsoft (MSFT)</SelectItem>
+              <SelectItem value="AMZN">Amazon (AMZN)</SelectItem>
+              <SelectItem value="NVDA">NVIDIA (NVDA)</SelectItem>
+            </SelectContent>
+          </Select>
 
           <Button
             type="submit"
@@ -150,10 +166,7 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
               </CardContent>
             </Card>
 
-            <Button
-              onClick={handleAddStock}
-              className="w-full gap-2"
-            >
+            <Button onClick={handleAddStock} className="w-full gap-2">
               <Plus className="h-4 w-4" />
               Adicionar à Lista
             </Button>
