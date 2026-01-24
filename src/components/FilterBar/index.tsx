@@ -1,4 +1,5 @@
 import React from "react";
+import type { PredictionSignal } from "../../types/api";
 
 import {
   Select,
@@ -23,7 +24,7 @@ export type SortOption =
   | "ticker-asc"
   | "ticker-desc";
 
-export type FilterOption = "all" | "buy" | "hold" | "sell";
+export type FilterOption = "all" | Lowercase<PredictionSignal>;
 
 interface FilterBarProps {
   sortBy: SortOption;

@@ -5,8 +5,6 @@ import ErrorBoundary from './components/ErrorBoundary'
 import "./index.css";
 import App from './App';
 
-console.log('Iniciando aplicação...');
-
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error('Elemento root não encontrado!');

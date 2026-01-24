@@ -1,8 +1,6 @@
 import axios from "axios";
 import { API_ENDPOINTS } from "../config/api";
-import type { PredictionData, TickerInfo } from "../types/api";
 import { getCacheItem, setCacheItem } from "../utils/cache";
-
 // Configurar axios com timeout e headers padrão
 const axiosInstance = axios.create({
     timeout: 30000, // 30 segundos
@@ -10,12 +8,8 @@ const axiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 });
-
-// Re-exportar tipos para compatibilidade
-export type { PredictionData, TickerInfo };
-
 // Função auxiliar para tratar erros do axios
-const handleApiError = (error: unknown, defaultMessage: string): Error => {
+const handleApiError = (error, defaultMessage) => {
     if (axios.isAxiosError(error)) {
         // Erro de resposta do servidor (4xx, 5xx)
         if (error.response) {
@@ -36,49 +30,47 @@ const handleApiError = (error: unknown, defaultMessage: string): Error => {
     console.error(defaultMessage, error);
     return error instanceof Error ? error : new Error(defaultMessage);
 };
-
 // realiza a predição para um ticker (com cache)
-export const getPrediction = async (ticker: string): Promise<PredictionData> => {
+export const getPrediction = async (ticker) => {
     // Check cache first
     const cacheKey = `prediction:${ticker.toUpperCase()}`;
-    const cachedData = getCacheItem<PredictionData>(cacheKey);
+    const cachedData = getCacheItem(cacheKey);
     if (cachedData) {
         return cachedData;
     }
-
     try {
-        const { data } = await axiosInstance.post<PredictionData>(API_ENDPOINTS.predict(ticker));
+        const { data } = await axiosInstance.post(API_ENDPOINTS.predict(ticker));
         // Cache for 1 hour (3600 seconds)
         setCacheItem(cacheKey, data, 3600);
         return data;
-    } catch (error) {
+    }
+    catch (error) {
         throw handleApiError(error, 'Erro ao buscar predição');
     }
-}
-
-export const getTickerInfo = async (ticker: string): Promise<TickerInfo> => {
+};
+export const getTickerInfo = async (ticker) => {
     // Check cache first
     const cacheKey = `tickerInfo:${ticker.toUpperCase()}`;
-    const cachedData = getCacheItem<TickerInfo>(cacheKey);
+    const cachedData = getCacheItem(cacheKey);
     if (cachedData) {
         return cachedData;
     }
-
     try {
-        const { data } = await axiosInstance.get<TickerInfo>(API_ENDPOINTS.tickerInfo(ticker));
+        const { data } = await axiosInstance.get(API_ENDPOINTS.tickerInfo(ticker));
         // Cache for 24 hours (86400 seconds) - ticker info changes less frequently
         setCacheItem(cacheKey, data, 86400);
         return data;
-    } catch (error) {
+    }
+    catch (error) {
         throw handleApiError(error, 'Erro ao buscar informações do ticker');
     }
-}
-
-export const checkHealth = async (): Promise<{ status: string }> => {
+};
+export const checkHealth = async () => {
     try {
-        const { data } = await axiosInstance.get<{ status: string}>(API_ENDPOINTS.health);
+        const { data } = await axiosInstance.get(API_ENDPOINTS.health);
         return data;
-    } catch (error) {
+    }
+    catch (error) {
         throw handleApiError(error, 'Erro ao verificar saúde da API');
     }
-}
+};
