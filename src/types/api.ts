@@ -1,7 +1,9 @@
 // Tipos da API
+export type PredictionSignal = "BUY" | "SELL" | "HOLD";
+
 export interface PredictionData {
     ticker: string;
-    prediction: string; // "BUY", "SELL", "HOLD"
+    prediction: PredictionSignal;
     confidence: number;
     ai_logic: {
         sentiment_analysis: { average_sentiment: number };
@@ -16,6 +18,7 @@ export interface TickerInfo {
     name: string;
     sector?: string;
     industry?: string;
+    pe_ratio?: number;
 }
 
 

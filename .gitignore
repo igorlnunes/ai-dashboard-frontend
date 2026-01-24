@@ -28,3 +28,4 @@ dist-ssr
 
 # Others Files
 utils-commands.md
+/commands/

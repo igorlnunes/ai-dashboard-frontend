@@ -1,7 +1,6 @@
 import { useState, useEffect, type FormEvent, type ChangeEvent } from "react";
 import { usePrediction } from "../../hooks/usePrediction";
 import { getTickerInfo } from "../../services/apiService";
-import { getPERatio, getCompanyName } from "../../utils/stockData";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -61,14 +60,8 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
       onAddStock({
         data,
-        companyName:
-          tickerInfo?.name ||
-          getCompanyName(data.ticker) ||
-          undefined,
-        peRatio:
-          tickerInfo && "pe_ratio" in tickerInfo
-            ? (tickerInfo as any).pe_ratio
-            : getPERatio(data.ticker) || undefined,
+        companyName: tickerInfo?.name,
+        peRatio: tickerInfo?.pe_ratio,
       });
 
       setSearchTicker("");

@@ -1,56 +1,43 @@
 import { useState, useCallback } from 'react';
 import { getPrediction, getTickerInfo } from '../services/apiService';
-import type { PredictionData } from '../types/api';
-
-interface StockItem {
-    data: PredictionData;
-    companyName?: string;
-    peRatio?: number;
-}
-
 export const useStockList = () => {
-    const [stocks, setStocks] = useState<StockItem[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-
-    const addStock = useCallback(async (ticker: string) => {
+    const [stocks, setStocks] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const addStock = useCallback(async (ticker) => {
         // Verificar se já existe
         if (stocks.some(s => s.data.ticker.toUpperCase() === ticker.toUpperCase())) {
             setError(`Ação ${ticker} já está na lista`);
             return;
         }
-
         setLoading(true);
         setError(null);
-
         try {
             // Buscar predição e informações do ticker em paralelo
             const [predictionData, tickerInfo] = await Promise.all([
                 getPrediction(ticker),
                 getTickerInfo(ticker).catch(() => null), // Se falhar, continua sem info
             ]);
-
-            const newStock: StockItem = {
+            const newStock = {
                 data: predictionData,
                 // API-first: use only if API provides, otherwise undefined
                 companyName: tickerInfo?.name,
                 peRatio: tickerInfo?.pe_ratio,
             };
-
             setStocks(prev => [...prev, newStock]);
-        } catch (err: unknown) {
+        }
+        catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Erro ao adicionar ação';
             setError(errorMessage);
-        } finally {
+        }
+        finally {
             setLoading(false);
         }
     }, [stocks]);
-
-    const removeStock = useCallback((ticker: string) => {
+    const removeStock = useCallback((ticker) => {
         setStocks(prev => prev.filter(s => s.data.ticker.toUpperCase() !== ticker.toUpperCase()));
     }, []);
-
-    const addStockDirectly = useCallback((stock: StockItem) => {
+    const addStockDirectly = useCallback((stock) => {
         // Verificar se já existe
         if (stocks.some(s => s.data.ticker.toUpperCase() === stock.data.ticker.toUpperCase())) {
             setError(`Ação ${stock.data.ticker} já está na lista`);
@@ -58,12 +45,10 @@ export const useStockList = () => {
         }
         setStocks(prev => [...prev, stock]);
     }, [stocks]);
-
     const loadDefaultStocks = useCallback(async () => {
         const defaultTickers = ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'AMZN', 'NVDA'];
         setLoading(true);
         setError(null);
-
         try {
             const stockPromises = defaultTickers.map(async (ticker) => {
                 try {
@@ -71,31 +56,31 @@ export const useStockList = () => {
                         getPrediction(ticker),
                         getTickerInfo(ticker).catch(() => null),
                     ]);
-
-                    const stock: StockItem = {
+                    const stock = {
                         data: predictionData,
                         // API-first: use only if API provides, otherwise undefined
                         companyName: tickerInfo?.name,
                         peRatio: tickerInfo?.pe_ratio,
                     };
                     return stock;
-                } catch (err) {
+                }
+                catch (err) {
                     console.error(`Erro ao carregar ${ticker}:`, err);
                     return null;
                 }
             });
-
             const results = await Promise.all(stockPromises);
-            const validStocks = results.filter((stock): stock is StockItem => stock !== null);
+            const validStocks = results.filter((stock) => stock !== null);
             setStocks(validStocks);
-        } catch (err: unknown) {
+        }
+        catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar ações padrão';
             setError(errorMessage);
-        } finally {
+        }
+        finally {
             setLoading(false);
         }
     }, []);
-
     return {
         stocks,
         loading,
@@ -106,4 +91,3 @@ export const useStockList = () => {
         loadDefaultStocks,
     };
 };
-
