@@ -17,7 +17,7 @@ export default function StockGrid({ stocks, loading }: StockGridProps) {
   /* ---------------- Loading ---------------- */
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 p-3 sm:p-4 lg:p-6">
         {Array.from({ length: 6 }).map((_, i) => (
           <StockCardSkeleton key={i} />
         ))}
@@ -70,8 +70,8 @@ export default function StockGrid({ stocks, loading }: StockGridProps) {
 
   /* ---------------- Grid ---------------- */
   return (
-    <div className="p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className="p-3 sm:p-4 lg:p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {stocks.map((stock, index) => (
           <StockCard
             key={`${stock.data.ticker}-${index}`}

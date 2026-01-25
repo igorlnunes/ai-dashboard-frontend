@@ -7,27 +7,27 @@ export default function Header() {
 
   return (
     <header className="border-b bg-background/95 dark:bg-slate-900/95 dark:border-slate-800 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:supports-[backdrop-filter]:bg-slate-900/60 transition-colors duration-300">
-      <div className="flex h-16 items-center px-4 md:px-8 justify-between">
+      <div className="flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8 justify-between">
 
         {/* Logo */}
-        <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-          <TrendingUp className="h-6 w-6 text-primary" />
+        <div className="flex items-center gap-2 font-bold text-lg sm:text-xl tracking-tight">
+          <TrendingUp className="h-5 sm:h-6 w-5 sm:w-6 text-primary" />
           <span className="hidden sm:inline">StockDash</span>
         </div>
 
         {/* Navegação + Toggle */}
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-2 sm:gap-4 lg:gap-6">
 
           <a
             href="#quem-somos"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground dark:hover:text-slate-200 transition-colors"
+            className="hidden sm:inline text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground dark:hover:text-slate-200 transition-colors"
           >
             Quem somos
           </a>
 
           <a
             href="#metodologia"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground dark:hover:text-slate-200 transition-colors"
+            className="hidden sm:inline text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground dark:hover:text-slate-200 transition-colors"
           >
             Metodologia
           </a>

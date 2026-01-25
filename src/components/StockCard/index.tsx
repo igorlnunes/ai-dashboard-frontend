@@ -111,14 +111,14 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
   predictionPosition = Math.min(100, Math.max(0, predictionPosition));
 
   return (
-    <Card className="rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800">
-      <CardHeader className="flex flex-row items-start justify-between pb-3">
-        <div className="flex-1">
-          <CardTitle className="text-2xl font-bold">
+    <Card className="rounded-lg sm:rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800">
+      <CardHeader className="flex flex-col sm:flex-row items-start justify-between pb-2 sm:pb-3 gap-2">
+        <div className="flex-1 min-w-0">
+          <CardTitle className="text-xl sm:text-2xl font-bold truncate">
             {data.ticker}
           </CardTitle>
           {companyName && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">
               {companyName}
             </p>
           )}
@@ -127,52 +127,53 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
         {/* Badge de previsão com tooltip */}
         <Tooltip text={predictionContent.tooltip} position="left">
           <Badge 
-            className={`${predictionContent.color} ${predictionContent.textColor} gap-2 px-3 py-2 uppercase font-bold text-xs cursor-help`}
+            className={`${predictionContent.color} ${predictionContent.textColor} gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 uppercase font-bold text-[10px] sm:text-xs cursor-help flex-shrink-0`}
           >
             {predictionContent.icon}
-            {predictionContent.label}
+            <span className="hidden sm:inline">{predictionContent.label}</span>
+            <span className="sm:hidden">{data.prediction}</span>
           </Badge>
         </Tooltip>
       </CardHeader>
 
-      <CardContent className="space-y-5">
+      <CardContent className="space-y-3 sm:space-y-5">
         {/* Preço */}
         <div>
-          <div className="text-4xl font-extrabold">
+          <div className="text-3xl sm:text-4xl font-extrabold">
             ${latestPrice.toFixed(2)}
           </div>
 
           <div
-            className={`flex items-center gap-1 text-sm font-semibold ${
+            className={`flex items-center gap-1 text-xs sm:text-sm font-semibold ${
               isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
             }`}
           >
-            {isPositive ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+            {isPositive ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
             {isPositive ? "+" : ""}
             ${priceChange.toFixed(2)} ({priceChangePercent}%)
           </div>
 
           {sparklineData.length > 0 && (
-            <div className="mt-3 bg-muted/30 dark:bg-slate-800/50 rounded-lg p-2">
-              <div className="text-xs text-muted-foreground mb-1">
+            <div className="mt-2 sm:mt-3 bg-muted/30 dark:bg-slate-800/50 rounded-lg p-2">
+              <div className="text-[11px] sm:text-xs text-muted-foreground mb-1">
                 Últimos {sparklineData.length} dias
               </div>
-              <Sparkline data={sparklineData} width={200} height={50} />
+              <Sparkline data={sparklineData} width={200} height={40} />
             </div>
           )}
         </div>
 
         {/* Barra de Confiança */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
+        <div className="space-y-1.5">
+          <div className="flex justify-between items-center gap-2">
             <Tooltip text={`Nível de certeza: ${confidenceValue >= 80 ? 'Alto' : confidenceValue >= 60 ? 'Médio' : 'Baixo'}`}>
-              <p className="text-sm font-semibold text-muted-foreground cursor-help">
+              <p className="text-xs sm:text-sm font-semibold text-muted-foreground cursor-help">
                 Confiança
               </p>
             </Tooltip>
-            <span className="text-sm font-bold">{confidenceValue.toFixed(1)}%</span>
+            <span className="text-xs sm:text-sm font-bold">{confidenceValue.toFixed(1)}%</span>
           </div>
-          <div className="w-full bg-secondary dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+          <div className="w-full bg-secondary dark:bg-slate-700 rounded-full h-2 sm:h-3 overflow-hidden">
             <div
               className={`h-full ${getConfidenceColor()} transition-all duration-500`}
               style={{ width: `${confidenceValue}%` }}
@@ -181,12 +182,12 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
         </div>
 
         {/* Predição IA */}
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase text-muted-foreground">
-            Posicionamento no Modelo
+        <div className="space-y-1.5">
+          <p className="text-[10px] sm:text-xs font-semibold uppercase text-muted-foreground">
+            Posicionamento
           </p>
 
-          <div className="relative h-12 rounded-lg overflow-hidden bg-muted dark:bg-slate-700 flex">
+          <div className="relative h-10 sm:h-12 rounded-lg overflow-hidden bg-muted dark:bg-slate-700 flex">
             <div className="w-[40%] bg-rose-500/30 dark:bg-rose-500/40" />
             <div className="w-[20%] bg-amber-500/30 dark:bg-amber-500/40" />
             <div className="w-[40%] bg-emerald-500/30 dark:bg-emerald-500/40" />
@@ -197,7 +198,7 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
             >
               <div className="flex flex-col items-center -translate-x-1/2">
                 <div
-                  className={`w-0 h-0 border-l-8 border-r-8 border-b-[10px] border-l-transparent border-r-transparent ${
+                  className={`w-0 h-0 border-l-6 sm:border-l-8 border-r-6 sm:border-r-8 border-b-[8px] sm:border-b-[10px] border-l-transparent border-r-transparent ${
                     data.prediction === "BUY"
                       ? "border-b-emerald-500 dark:border-b-emerald-400"
                       : data.prediction === "HOLD"
@@ -205,29 +206,29 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
                       : "border-b-rose-500 dark:border-b-rose-400"
                   }`}
                 />
-                <Badge variant="outline" className="font-bold dark:border-slate-600">
+                <Badge variant="outline" className="font-bold text-[10px] sm:text-xs dark:border-slate-600">
                   {data.prediction}
                 </Badge>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-between text-[10px] text-muted-foreground font-semibold">
-            <span>VENDER (0–40)</span>
-            <span>MANTER (40–60)</span>
-            <span>COMPRAR (60–100)</span>
+          <div className="flex justify-between text-[9px] sm:text-[10px] text-muted-foreground font-semibold">
+            <span>VENDER</span>
+            <span>MANTER</span>
+            <span>COMPRAR</span>
           </div>
         </div>
 
         {/* Volatilidade */}
-        <div className="pt-2">
+        <div className="pt-1 sm:pt-2">
           <Tooltip text="Medida de flutuação de preço. Alta = mais arriscado. Calculada com base nos últimos 20 dias.">
-            <div className="flex justify-between items-center">
-              <p className="text-sm font-semibold text-muted-foreground cursor-help">
+            <div className="flex justify-between items-center gap-2">
+              <p className="text-xs sm:text-sm font-semibold text-muted-foreground cursor-help">
                 Volatilidade
               </p>
               <span
-                className={`text-sm font-bold px-3 py-1 rounded-full ${
+                className={`text-xs sm:text-sm font-bold px-2 sm:px-3 py-1 rounded-full ${
                   volatility === "Baixa"
                     ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
                     : volatility === "Média"
@@ -242,17 +243,17 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
         </div>
 
         {/* Métricas */}
-        <div className="grid grid-cols-3 gap-4 pt-4 border-t dark:border-slate-700">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-3 sm:pt-4 border-t dark:border-slate-700">
           <div>
-            <p className="text-xs text-muted-foreground">Volume</p>
-            <p className="text-lg font-bold">{volumeFormatted}</p>
+            <p className="text-[10px] sm:text-xs text-muted-foreground">Volume</p>
+            <p className="text-base sm:text-lg font-bold">{volumeFormatted}</p>
           </div>
 
           {peRatio && (
             <Tooltip text="Relação Preço-Lucro. Indica quanto investidores pagam por unidade de lucro.">
               <div className="cursor-help">
-                <p className="text-xs text-muted-foreground">P/E</p>
-                <p className="text-lg font-bold">{peRatio.toFixed(1)}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground">P/E</p>
+                <p className="text-base sm:text-lg font-bold">{peRatio.toFixed(1)}</p>
               </div>
             </Tooltip>
           )}
@@ -260,10 +261,10 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
           <div className="text-right">
             <div className="flex items-center justify-end gap-1 mb-1">
               <Clock className="h-3 w-3 text-muted-foreground" />
-              <p className="text-xs text-muted-foreground">Cache</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">Cache</p>
             </div>
             <Tooltip text="Dados carregados do cache local. Use 'Atualizar' para versão em tempo real.">
-              <Badge variant="secondary" className="text-xs cursor-help">
+              <Badge variant="secondary" className="text-[10px] sm:text-xs cursor-help">
                 Cacheado
               </Badge>
             </Tooltip>

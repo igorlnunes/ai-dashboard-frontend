@@ -53,11 +53,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <Card>
-      <CardContent className="p-4 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-        <div className="flex flex-col md:flex-row gap-4 md:items-center flex-1">
+      <CardContent className="p-3 sm:p-4 flex flex-col lg:flex-row gap-2 sm:gap-3 lg:gap-4 lg:items-center lg:justify-between">
+        <div className="flex flex-col lg:flex-row gap-2 sm:gap-3 lg:gap-4 lg:items-center flex-1">
           {/* Ordenação */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
               Ordenar por:
             </span>
 
@@ -67,7 +67,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 onSortChange(value as SortOption)
               }
             >
-              <SelectTrigger className="w-56">
+              <SelectTrigger className="w-full sm:w-56">
                 <SelectValue placeholder="Selecione" />
               </SelectTrigger>
 
@@ -101,8 +101,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </div>
 
           {/* Filtro */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
               Filtrar por:
             </span>
 
@@ -112,7 +112,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               onValueChange={(value) =>
                 value && onFilterChange(value as FilterOption)
               }
-              className="flex gap-1"
+              className="flex gap-0.5 sm:gap-1 flex-wrap"
             >
               <ToggleGroupItem value="all">
                 Todas
@@ -148,7 +148,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             onClick={handleReset}
             variant="outline"
             size="sm"
-            className="gap-2 whitespace-nowrap"
+            className="gap-2 whitespace-nowrap w-full sm:w-auto"
             aria-label="Resetar filtros"
           >
             <RotateCcw className="h-4 w-4" />
