@@ -1,7 +1,8 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Shield } from "lucide-react";
+import { TrendingUp, TrendingDown, Activity, Clock } from "lucide-react";
+import Tooltip from "@/components/ui/tooltip";
 import Sparkline from "../Sparkline";
 export function StockCard({ data, companyName, peRatio }) {
     const latestPrice = data.price_data?.at(-1)?.close ?? 0;
@@ -36,6 +37,44 @@ export function StockCard({ data, companyName, peRatio }) {
         ? calculateVolatility(sparklineData)
         : "Média";
     const confidenceValue = data.confidence * 100;
+    // Função para renderizar badge de previsão com ícone
+    const getPredictionBadgeContent = () => {
+        switch (data.prediction) {
+            case 'BUY':
+                return {
+                    icon: _jsx(TrendingUp, { className: "h-4 w-4" }),
+                    color: 'bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700',
+                    textColor: 'text-white',
+                    label: 'COMPRAR',
+                    tooltip: 'Modelo prevê alta de preço nos próximos dias'
+                };
+            case 'SELL':
+                return {
+                    icon: _jsx(TrendingDown, { className: "h-4 w-4" }),
+                    color: 'bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800',
+                    textColor: 'text-white',
+                    label: 'VENDER',
+                    tooltip: 'Modelo prevê queda de preço nos próximos dias'
+                };
+            default:
+                return {
+                    icon: _jsx(Activity, { className: "h-4 w-4" }),
+                    color: 'bg-amber-500 dark:bg-amber-600 hover:bg-amber-600 dark:hover:bg-amber-700',
+                    textColor: 'text-white',
+                    label: 'MANTER',
+                    tooltip: 'Modelo prevê estabilidade de preço nos próximos dias'
+                };
+        }
+    };
+    const predictionContent = getPredictionBadgeContent();
+    // Cor da barra de confiança
+    const getConfidenceColor = () => {
+        if (confidenceValue >= 80)
+            return 'bg-green-500 dark:bg-green-600';
+        if (confidenceValue >= 60)
+            return 'bg-amber-500 dark:bg-amber-600';
+        return 'bg-red-500 dark:bg-red-600';
+    };
     let predictionPosition = 0;
     if (data.prediction === "BUY") {
         predictionPosition = 60 + (confidenceValue / 100) * 40;
@@ -47,13 +86,13 @@ export function StockCard({ data, companyName, peRatio }) {
         predictionPosition = (confidenceValue / 100) * 40;
     }
     predictionPosition = Math.min(100, Math.max(0, predictionPosition));
-    return (_jsxs(Card, { className: "rounded-2xl shadow-md hover:shadow-xl transition-all", children: [_jsxs(CardHeader, { className: "flex flex-row items-start justify-between", children: [_jsxs("div", { children: [_jsx(CardTitle, { className: "text-2xl font-bold", children: data.ticker }), companyName && (_jsx("p", { className: "text-sm text-muted-foreground", children: companyName }))] }), _jsx(Badge, { className: "uppercase", children: "Live" })] }), _jsxs(CardContent, { className: "space-y-6", children: [_jsxs("div", { children: [_jsxs("div", { className: "text-4xl font-extrabold", children: ["$", latestPrice.toFixed(2)] }), _jsxs("div", { className: `flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-emerald-600" : "text-rose-600"}`, children: [isPositive ? _jsx(TrendingUp, { size: 16 }) : _jsx(TrendingDown, { size: 16 }), isPositive ? "+" : "", "$", priceChange.toFixed(2), " (", priceChangePercent, "%)"] }), sparklineData.length > 0 && (_jsx("div", { className: "mt-3 bg-muted/30 rounded-lg p-2", children: _jsx(Sparkline, { data: sparklineData, width: 200, height: 50 }) }))] }), _jsxs("div", { className: "space-y-2", children: [_jsx("p", { className: "text-xs font-semibold uppercase text-muted-foreground", children: "AI Prediction" }), _jsxs("div", { className: "relative h-12 rounded-lg overflow-hidden bg-muted flex", children: [_jsx("div", { className: "w-[40%] bg-rose-500" }), _jsx("div", { className: "w-[20%] bg-amber-500" }), _jsx("div", { className: "w-[40%] bg-emerald-500" }), _jsx("div", { className: "absolute top-1/2 -translate-y-1/2", style: { left: `${predictionPosition}%` }, children: _jsxs("div", { className: "flex flex-col items-center -translate-x-1/2", children: [_jsx("div", { className: `w-0 h-0 border-l-8 border-r-8 border-b-[10px] border-l-transparent border-r-transparent ${data.prediction === "BUY"
-                                                        ? "border-b-emerald-500"
+    return (_jsxs(Card, { className: "rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800", children: [_jsxs(CardHeader, { className: "flex flex-row items-start justify-between pb-3", children: [_jsxs("div", { className: "flex-1", children: [_jsx(CardTitle, { className: "text-2xl font-bold", children: data.ticker }), companyName && (_jsx("p", { className: "text-sm text-muted-foreground", children: companyName }))] }), _jsx(Tooltip, { text: predictionContent.tooltip, position: "left", children: _jsxs(Badge, { className: `${predictionContent.color} ${predictionContent.textColor} gap-2 px-3 py-2 uppercase font-bold text-xs cursor-help`, children: [predictionContent.icon, predictionContent.label] }) })] }), _jsxs(CardContent, { className: "space-y-5", children: [_jsxs("div", { children: [_jsxs("div", { className: "text-4xl font-extrabold", children: ["$", latestPrice.toFixed(2)] }), _jsxs("div", { className: `flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`, children: [isPositive ? _jsx(TrendingUp, { size: 16 }) : _jsx(TrendingDown, { size: 16 }), isPositive ? "+" : "", "$", priceChange.toFixed(2), " (", priceChangePercent, "%)"] }), sparklineData.length > 0 && (_jsxs("div", { className: "mt-3 bg-muted/30 dark:bg-slate-800/50 rounded-lg p-2", children: [_jsxs("div", { className: "text-xs text-muted-foreground mb-1", children: ["\u00DAltimos ", sparklineData.length, " dias"] }), _jsx(Sparkline, { data: sparklineData, width: 200, height: 50 })] }))] }), _jsxs("div", { className: "space-y-2", children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsx(Tooltip, { text: `Nível de certeza: ${confidenceValue >= 80 ? 'Alto' : confidenceValue >= 60 ? 'Médio' : 'Baixo'}`, children: _jsx("p", { className: "text-sm font-semibold text-muted-foreground cursor-help", children: "Confian\u00E7a" }) }), _jsxs("span", { className: "text-sm font-bold", children: [confidenceValue.toFixed(1), "%"] })] }), _jsx("div", { className: "w-full bg-secondary dark:bg-slate-700 rounded-full h-3 overflow-hidden", children: _jsx("div", { className: `h-full ${getConfidenceColor()} transition-all duration-500`, style: { width: `${confidenceValue}%` } }) })] }), _jsxs("div", { className: "space-y-2", children: [_jsx("p", { className: "text-xs font-semibold uppercase text-muted-foreground", children: "Posicionamento no Modelo" }), _jsxs("div", { className: "relative h-12 rounded-lg overflow-hidden bg-muted dark:bg-slate-700 flex", children: [_jsx("div", { className: "w-[40%] bg-rose-500/30 dark:bg-rose-500/40" }), _jsx("div", { className: "w-[20%] bg-amber-500/30 dark:bg-amber-500/40" }), _jsx("div", { className: "w-[40%] bg-emerald-500/30 dark:bg-emerald-500/40" }), _jsx("div", { className: "absolute top-1/2 -translate-y-1/2 transition-all duration-300", style: { left: `${predictionPosition}%` }, children: _jsxs("div", { className: "flex flex-col items-center -translate-x-1/2", children: [_jsx("div", { className: `w-0 h-0 border-l-8 border-r-8 border-b-[10px] border-l-transparent border-r-transparent ${data.prediction === "BUY"
+                                                        ? "border-b-emerald-500 dark:border-b-emerald-400"
                                                         : data.prediction === "HOLD"
-                                                            ? "border-b-amber-500"
-                                                            : "border-b-rose-500"}` }), _jsx(Badge, { variant: "outline", className: "font-bold", children: data.prediction })] }) })] }), _jsxs("div", { className: "flex justify-between text-[10px] text-muted-foreground font-semibold", children: [_jsx("span", { children: "SELL (0\u201340)" }), _jsx("span", { children: "HOLD (40\u201360)" }), _jsx("span", { children: "BUY (60\u2013100)" })] })] }), _jsxs("div", { className: "text-center space-y-1", children: [_jsxs("div", { className: "flex justify-center items-center gap-2 text-sm font-semibold text-muted-foreground", children: [_jsx(Shield, { size: 16 }), confidenceValue.toFixed(2), "% confidence"] }), _jsx("p", { className: "text-xs italic text-muted-foreground", children: "Previs\u00E3o para as pr\u00F3ximas 24h" })] }), _jsxs("div", { className: "grid grid-cols-3 gap-4 pt-4 border-t", children: [_jsxs("div", { children: [_jsx("p", { className: "text-xs text-muted-foreground", children: "Volume" }), _jsx("p", { className: "text-lg font-bold", children: volumeFormatted })] }), peRatio && (_jsxs("div", { children: [_jsx("p", { className: "text-xs text-muted-foreground", children: "P/E" }), _jsx("p", { className: "text-lg font-bold", children: peRatio.toFixed(1) })] })), _jsxs("div", { children: [_jsx("p", { className: "text-xs text-muted-foreground", children: "Volatilidade" }), _jsx("p", { className: `text-lg font-bold ${volatility === "Baixa"
-                                            ? "text-emerald-600"
+                                                            ? "border-b-amber-500 dark:border-b-amber-400"
+                                                            : "border-b-rose-500 dark:border-b-rose-400"}` }), _jsx(Badge, { variant: "outline", className: "font-bold dark:border-slate-600", children: data.prediction })] }) })] }), _jsxs("div", { className: "flex justify-between text-[10px] text-muted-foreground font-semibold", children: [_jsx("span", { children: "VENDER (0\u201340)" }), _jsx("span", { children: "MANTER (40\u201360)" }), _jsx("span", { children: "COMPRAR (60\u2013100)" })] })] }), _jsx("div", { className: "pt-2", children: _jsx(Tooltip, { text: "Medida de flutua\u00E7\u00E3o de pre\u00E7o. Alta = mais arriscado. Calculada com base nos \u00FAltimos 20 dias.", children: _jsxs("div", { className: "flex justify-between items-center", children: [_jsx("p", { className: "text-sm font-semibold text-muted-foreground cursor-help", children: "Volatilidade" }), _jsx("span", { className: `text-sm font-bold px-3 py-1 rounded-full ${volatility === "Baixa"
+                                            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
                                             : volatility === "Média"
-                                                ? "text-amber-500"
-                                                : "text-rose-600"}`, children: volatility })] })] })] })] }));
+                                                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                                                : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"}`, children: volatility })] }) }) }), _jsxs("div", { className: "grid grid-cols-3 gap-4 pt-4 border-t dark:border-slate-700", children: [_jsxs("div", { children: [_jsx("p", { className: "text-xs text-muted-foreground", children: "Volume" }), _jsx("p", { className: "text-lg font-bold", children: volumeFormatted })] }), peRatio && (_jsx(Tooltip, { text: "Rela\u00E7\u00E3o Pre\u00E7o-Lucro. Indica quanto investidores pagam por unidade de lucro.", children: _jsxs("div", { className: "cursor-help", children: [_jsx("p", { className: "text-xs text-muted-foreground", children: "P/E" }), _jsx("p", { className: "text-lg font-bold", children: peRatio.toFixed(1) })] }) })), _jsxs("div", { className: "text-right", children: [_jsxs("div", { className: "flex items-center justify-end gap-1 mb-1", children: [_jsx(Clock, { className: "h-3 w-3 text-muted-foreground" }), _jsx("p", { className: "text-xs text-muted-foreground", children: "Cache" })] }), _jsx(Tooltip, { text: "Dados carregados do cache local. Use 'Atualizar' para vers\u00E3o em tempo real.", children: _jsx(Badge, { variant: "secondary", className: "text-xs cursor-help", children: "Cacheado" }) })] })] })] })] }));
 }

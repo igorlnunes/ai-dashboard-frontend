@@ -7,10 +7,11 @@ import StockGrid from "./components/StockGrid";
 import SearchModal from "./components/SearchModal";
 import { useStockList } from "./hooks/useStockList";
 import { sortStocks, filterStocks } from "./utils/sortAndFilter";
+import { ThemeProvider } from "./context/ThemeContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
-export default function App() {
+function AppContent() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sortBy, setSortBy] = useState("ticker-asc");
     const [filterBy, setFilterBy] = useState("all");
@@ -26,5 +27,8 @@ export default function App() {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return (_jsxs("div", { className: "min-h-screen bg-background", children: [_jsx(Header, {}), _jsxs("main", { className: "max-w-7xl mx-auto px-4 py-6 space-y-6", children: [_jsx(SearchBar, { onSearchClick: () => setIsModalOpen(true) }), stocks.length > 0 && (_jsx(FilterBar, { sortBy: sortBy, filterBy: filterBy, onSortChange: setSortBy, onFilterChange: setFilterBy })), error && (_jsxs(Alert, { variant: "destructive", children: [_jsx(AlertCircle, { className: "h-4 w-4" }), _jsxs(AlertDescription, { children: ["Erro ao carregar a\u00E7\u00F5es: ", error] })] })), _jsx(Card, { className: "p-4", children: _jsx(StockGrid, { stocks: filteredAndSortedStocks, loading: loading }) })] }), _jsx(SearchModal, { isOpen: isModalOpen, onClose: () => setIsModalOpen(false), onAddStock: addStockDirectly })] }));
+    return (_jsxs("div", { className: "min-h-screen bg-background dark:bg-slate-950 transition-colors duration-300", children: [_jsx(Header, {}), _jsxs("main", { className: "max-w-7xl mx-auto px-4 py-6 space-y-6", children: [_jsx(SearchBar, { onSearchClick: () => setIsModalOpen(true) }), stocks.length > 0 && (_jsx(FilterBar, { sortBy: sortBy, filterBy: filterBy, onSortChange: setSortBy, onFilterChange: setFilterBy })), error && (_jsxs(Alert, { variant: "destructive", children: [_jsx(AlertCircle, { className: "h-4 w-4" }), _jsxs(AlertDescription, { children: ["Erro ao carregar a\u00E7\u00F5es: ", error] })] })), _jsx(Card, { className: "p-4 dark:bg-slate-900 dark:border-slate-800", children: _jsx(StockGrid, { stocks: filteredAndSortedStocks, loading: loading }) })] }), _jsx(SearchModal, { isOpen: isModalOpen, onClose: () => setIsModalOpen(false), onAddStock: addStockDirectly })] }));
+}
+export default function App() {
+    return (_jsx(ThemeProvider, { children: _jsx(AppContent, {}) }));
 }

@@ -10,12 +10,13 @@ import SearchModal from "./components/SearchModal";
 
 import { useStockList } from "./hooks/useStockList";
 import { sortStocks, filterStocks } from "./utils/sortAndFilter";
+import { ThemeProvider } from "./context/ThemeContext";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 
-export default function App() {
+function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("ticker-asc");
   const [filterBy, setFilterBy] = useState<FilterOption>("all");
@@ -42,7 +43,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background dark:bg-slate-950 transition-colors duration-300">
       <Header />
       <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
         {/* Barra de busca */}
@@ -69,7 +70,7 @@ export default function App() {
         )}
 
         {/* Grid */}
-        <Card className="p-4">
+        <Card className="p-4 dark:bg-slate-900 dark:border-slate-800">
           <StockGrid
             stocks={filteredAndSortedStocks}
             loading={loading}
@@ -84,5 +85,13 @@ export default function App() {
         onAddStock={addStockDirectly}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
