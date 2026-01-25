@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { StockCardSkeleton } from "@/components/ui/skeleton";
 import { RefreshCw, TrendingUp } from "lucide-react";
 import type { PredictionData } from "../../types/api";
 import { StockCard } from "../StockCard";
@@ -19,12 +19,7 @@ export default function StockGrid({ stocks, loading }: StockGridProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
         {Array.from({ length: 6 }).map((_, i) => (
-          <Card key={i} className="p-6 space-y-4">
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-10 w-32" />
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-8 w-1/2" />
-          </Card>
+          <StockCardSkeleton key={i} />
         ))}
       </div>
     );

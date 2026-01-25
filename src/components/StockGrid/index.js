@@ -1,12 +1,12 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { StockCardSkeleton } from "@/components/ui/skeleton";
 import { TrendingUp } from "lucide-react";
 import { StockCard } from "../StockCard";
 export default function StockGrid({ stocks, loading }) {
     /* ---------------- Loading ---------------- */
     if (loading) {
-        return (_jsx("div", { className: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6", children: Array.from({ length: 6 }).map((_, i) => (_jsxs(Card, { className: "p-6 space-y-4", children: [_jsx(Skeleton, { className: "h-6 w-24" }), _jsx(Skeleton, { className: "h-10 w-32" }), _jsx(Skeleton, { className: "h-20 w-full" }), _jsx(Skeleton, { className: "h-8 w-1/2" })] }, i))) }));
+        return (_jsx("div", { className: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6", children: Array.from({ length: 6 }).map((_, i) => (_jsx(StockCardSkeleton, {}, i))) }));
     }
     /* ---------------- Empty State ---------------- */
     if (!loading && stocks.length === 0) {
