@@ -9,8 +9,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
-import { Search, Loader2, AlertCircle, Plus } from "lucide-react";
+import { Search, Loader2, AlertCircle, Plus, Clock, X } from "lucide-react";
 import { StockCard } from "../StockCard";
+
+const SEARCH_HISTORY_KEY = "stockdash_search_history";
+const MAX_HISTORY = 5;
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -21,8 +24,21 @@ interface SearchModalProps {
 export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModalProps) {
   const [ticker, setTicker] = useState("GOOGL");
   const [searchTicker, setSearchTicker] = useState("");
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
   const { data, loading, error, refetch } = usePrediction(ticker);
+
+  // Load search history from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem(SEARCH_HISTORY_KEY);
+    if (stored) {
+      try {
+        setSearchHistory(JSON.parse(stored));
+      } catch {
+        setSearchHistory([]);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (ticker) {
@@ -33,8 +49,27 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchTicker.trim()) {
-      setTicker(searchTicker.toUpperCase());
+      const upperTicker = searchTicker.toUpperCase();
+      setTicker(upperTicker);
+      
+      // Add to search history
+      const updated = [
+        upperTicker,
+        ...searchHistory.filter((t) => t !== upperTicker),
+      ].slice(0, MAX_HISTORY);
+      setSearchHistory(updated);
+      localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
     }
+  };
+
+  const handleHistoryClick = (historyTicker: string) => {
+    setSearchTicker(historyTicker);
+    setTicker(historyTicker);
+  };
+
+  const clearHistory = () => {
+    setSearchHistory([]);
+    localStorage.removeItem(SEARCH_HISTORY_KEY);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -128,7 +163,34 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
           </Button>
         </form>
 
-        {/* Erro */}
+        {/* Search History */}
+        {searchHistory.length > 0 && (
+          <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                Buscas Recentes
+              </p>
+              <button
+                onClick={clearHistory}
+                className="text-xs text-muted-foreground hover:text-foreground transition"
+              >
+                Limpar
+              </button>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {searchHistory.map((historyTicker) => (
+                <button
+                  key={historyTicker}
+                  onClick={() => handleHistoryClick(historyTicker)}
+                  className="px-3 py-1 text-sm rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition text-foreground"
+                >
+                  {historyTicker}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         {error && (
           <Alert variant="destructive" className="mt-4">
             <AlertCircle className="h-4 w-4" />

@@ -13,6 +13,8 @@ import {
   ToggleGroupItem,
 } from "@/components/ui/toggle-group";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { RotateCcw } from "lucide-react";
 
 export type SortOption =
   | "price-high"
@@ -31,6 +33,7 @@ interface FilterBarProps {
   filterBy: FilterOption;
   onSortChange: (sort: SortOption) => void;
   onFilterChange: (filter: FilterOption) => void;
+  onReset?: () => void;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -38,95 +41,120 @@ const FilterBar: React.FC<FilterBarProps> = ({
   filterBy,
   onSortChange,
   onFilterChange,
+  onReset,
 }) => {
+  const handleReset = () => {
+    onReset?.();
+    onSortChange("ticker-asc");
+    onFilterChange("all");
+  };
+
+  const isFiltered = sortBy !== "ticker-asc" || filterBy !== "all";
+
   return (
     <Card>
       <CardContent className="p-4 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-        {/* Ordenação */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">
-            Ordenar por:
-          </span>
+        <div className="flex flex-col md:flex-row gap-4 md:items-center flex-1">
+          {/* Ordenação */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              Ordenar por:
+            </span>
 
-          <Select
-            value={sortBy}
-            onValueChange={(value) =>
-              onSortChange(value as SortOption)
-            }
-          >
-            <SelectTrigger className="w-56">
-              <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
+            <Select
+              value={sortBy}
+              onValueChange={(value) =>
+                onSortChange(value as SortOption)
+              }
+            >
+              <SelectTrigger className="w-56">
+                <SelectValue placeholder="Selecione" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectItem value="ticker-asc">
-                Ticker (A–Z)
-              </SelectItem>
-              <SelectItem value="ticker-desc">
-                Ticker (Z–A)
-              </SelectItem>
-              <SelectItem value="price-high">
-                Maior Preço
-              </SelectItem>
-              <SelectItem value="price-low">
-                Menor Preço
-              </SelectItem>
-              <SelectItem value="change-high">
-                Maior Alta
-              </SelectItem>
-              <SelectItem value="change-low">
-                Maior Baixa
-              </SelectItem>
-              <SelectItem value="confidence-high">
-                Maior Confiança
-              </SelectItem>
-              <SelectItem value="confidence-low">
-                Menor Confiança
-              </SelectItem>
-            </SelectContent>
-          </Select>
+              <SelectContent>
+                <SelectItem value="ticker-asc">
+                  Ticker (A–Z)
+                </SelectItem>
+                <SelectItem value="ticker-desc">
+                  Ticker (Z–A)
+                </SelectItem>
+                <SelectItem value="price-high">
+                  Maior Preço
+                </SelectItem>
+                <SelectItem value="price-low">
+                  Menor Preço
+                </SelectItem>
+                <SelectItem value="change-high">
+                  Maior Alta
+                </SelectItem>
+                <SelectItem value="change-low">
+                  Maior Baixa
+                </SelectItem>
+                <SelectItem value="confidence-high">
+                  Maior Confiança
+                </SelectItem>
+                <SelectItem value="confidence-low">
+                  Menor Confiança
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Filtro */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              Filtrar por:
+            </span>
+
+            <ToggleGroup
+              type="single"
+              value={filterBy}
+              onValueChange={(value) =>
+                value && onFilterChange(value as FilterOption)
+              }
+              className="flex gap-1"
+            >
+              <ToggleGroupItem value="all">
+                Todas
+              </ToggleGroupItem>
+
+              <ToggleGroupItem
+                value="buy"
+                className="data-[state=on]:bg-emerald-500 data-[state=on]:text-white"
+              >
+                BUY
+              </ToggleGroupItem>
+
+              <ToggleGroupItem
+                value="hold"
+                className="data-[state=on]:bg-yellow-500 data-[state=on]:text-white"
+              >
+                HOLD
+              </ToggleGroupItem>
+
+              <ToggleGroupItem
+                value="sell"
+                className="data-[state=on]:bg-red-500 data-[state=on]:text-white"
+              >
+                SELL
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
         </div>
 
-        {/* Filtro */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">
-            Filtrar por:
-          </span>
-
-          <ToggleGroup
-            type="single"
-            value={filterBy}
-            onValueChange={(value) =>
-              value && onFilterChange(value as FilterOption)
-            }
-            className="flex gap-1"
+        {/* Reset Button */}
+        {isFiltered && (
+          <Button
+            onClick={handleReset}
+            variant="outline"
+            size="sm"
+            className="gap-2 whitespace-nowrap"
+            aria-label="Resetar filtros"
           >
-            <ToggleGroupItem value="all">
-              Todas
-            </ToggleGroupItem>
-
-            <ToggleGroupItem
-              value="buy"
-              className="data-[state=on]:bg-emerald-500 data-[state=on]:text-white"
-            >
-              BUY
-            </ToggleGroupItem>
-
-            <ToggleGroupItem
-              value="hold"
-              className="data-[state=on]:bg-yellow-500 data-[state=on]:text-white"
-            >
-              HOLD
-            </ToggleGroupItem>
-
-            <ToggleGroupItem
-              value="sell"
-              className="data-[state=on]:bg-red-500 data-[state=on]:text-white"
-            >
-              SELL
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </div>
+            <RotateCcw className="h-4 w-4" />
+            Resetar Filtros
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

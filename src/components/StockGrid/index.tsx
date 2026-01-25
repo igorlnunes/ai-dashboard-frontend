@@ -35,13 +35,25 @@ export default function StockGrid({ stocks, loading }: StockGridProps) {
               <TrendingUp className="h-8 w-8 text-muted-foreground" />
             </div>
 
-            <h3 className="text-lg font-bold">
-              Nenhuma ação encontrada
-            </h3>
+            <div>
+              <h3 className="text-lg font-bold">
+                Nenhuma ação encontrada
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Seu painel está vazio
+              </p>
+            </div>
 
-            <p className="text-sm text-muted-foreground">
-              Use a busca para adicionar ações ao painel.
-            </p>
+            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 space-y-2 text-left">
+              <p className="text-xs font-semibold text-muted-foreground">
+                💡 Como começar:
+              </p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• Use a busca (🔍) para procurar por tickers</li>
+                <li>• Escolha entre ações populares (AAPL, TSLA, etc)</li>
+                <li>• Clique em "Adicionar à Lista"</li>
+              </ul>
+            </div>
 
             <p className="text-xs text-muted-foreground italic">
               Verifique se o backend está rodando em
