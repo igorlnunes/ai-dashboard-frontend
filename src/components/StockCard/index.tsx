@@ -111,7 +111,7 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
   predictionPosition = Math.min(100, Math.max(0, predictionPosition));
 
   return (
-    <Card className="rounded-lg sm:rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800">
+    <Card className="rounded-lg sm:rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800 animate-in fade-in duration-500">
       <CardHeader className="flex flex-col sm:flex-row items-start justify-between pb-2 sm:pb-3 gap-2">
         <div className="flex-1 min-w-0">
           <CardTitle className="text-xl sm:text-2xl font-bold truncate">

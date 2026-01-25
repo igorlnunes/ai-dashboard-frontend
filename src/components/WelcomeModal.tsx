@@ -166,7 +166,7 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
         </DialogHeader>
 
         {/* Slide Content */}
-        <div className="py-6 min-h-[300px]" role="region" aria-live="polite" aria-label={`Conteúdo do slide ${currentSlide + 1}`}>
+        <div className="py-6 min-h-[300px] animate-in fade-in duration-300" role="region" aria-live="polite" aria-label={`Conteúdo do slide ${currentSlide + 1}`}>
           {slide.content}
         </div>
 

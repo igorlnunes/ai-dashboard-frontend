@@ -213,7 +213,7 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
         {/* Resultado */}
         {data && !loading && (
-          <div className="space-y-4 pt-4">
+          <div className="space-y-4 pt-4 animate-in fade-in duration-300">
             <Card>
               <CardContent className="p-4">
                 <StockCard

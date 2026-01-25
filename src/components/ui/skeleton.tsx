@@ -7,7 +7,7 @@ function Skeleton({
   return (
     <div
       className={cn(
-        "animate-pulse rounded-md bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800",
+        "rounded-md bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800",
         className
       )}
       style={{
@@ -25,7 +25,7 @@ function Skeleton({
  */
 function StockCardSkeleton() {
   return (
-    <div className="rounded-2xl shadow-md border border-slate-200 dark:border-slate-800 dark:bg-slate-900 p-6 space-y-4">
+    <div className="rounded-2xl shadow-md border border-slate-200 dark:border-slate-800 dark:bg-slate-900 p-6 space-y-4 animate-in fade-in duration-500">
       {/* Header Section */}
       <div className="flex items-start justify-between">
         <div className="space-y-2 flex-1">
