@@ -51,9 +51,17 @@ function AppContent() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background dark:bg-slate-950 transition-colors duration-300">
+    <div className="min-h-screen bg-background dark:bg-slate-950 transition-colors duration-300 flex flex-col">
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-md"
+      >
+        Pular para conteúdo principal
+      </a>
+
       <Header />
-      <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+      <main id="main-content" className="flex-1 max-w-7xl mx-auto px-4 py-6 space-y-6 w-full">
         {/* Barra de busca */}
         <SearchBar onSearchClick={() => setIsModalOpen(true)} />
 
@@ -69,8 +77,8 @@ function AppContent() {
 
         {/* Erro */}
         {error && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
+          <Alert variant="destructive" role="alert" aria-live="assertive">
+            <AlertCircle className="h-4 w-4" aria-hidden="true" />
             <AlertDescription>
               Erro ao carregar ações: {error}
             </AlertDescription>

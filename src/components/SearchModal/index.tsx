@@ -115,10 +115,10 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-3xl bg-background text-foreground z-50 pointer-events-auto">
+      <DialogContent className="max-w-3xl bg-background text-foreground z-50 pointer-events-auto" role="dialog" aria-labelledby="search-modal-title" aria-describedby="search-modal-description">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5 text-primary" />
+          <DialogTitle id="search-modal-title" className="flex items-center gap-2">
+            <Search className="h-5 w-5 text-primary" aria-hidden="true" />
             Buscar Ação
           </DialogTitle>
         </DialogHeader>
@@ -130,11 +130,12 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
             value={searchTicker}
             onChange={handleInputChange}
             placeholder="Digite o ticker (ex: AAPL, TSLA, GOOGL)"
-            className="flex-1"
+            className="flex-1 focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Insira o símbolo do ticker da ação que deseja pesquisar"
           />
 
           <Select onValueChange={handleDropdownChange}>
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-[150px]" aria-label="Selecione uma ação popular">
               <SelectValue placeholder="Populares" />
             </SelectTrigger>
             <SelectContent>
@@ -150,11 +151,12 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
           <Button
             type="submit"
             disabled={loading || !searchTicker.trim()}
-            className="gap-2"
+            className="gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background"
+            aria-label={loading ? "Buscando informações" : "Buscar previsão da ação"}
           >
             {loading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                 Buscando
               </>
             ) : (
@@ -165,15 +167,16 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
         {/* Search History */}
         {searchHistory.length > 0 && (
-          <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800" role="region" aria-label="Histórico de buscas recentes">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
-                <Clock className="h-3 w-3" />
+                <Clock className="h-3 w-3" aria-hidden="true" />
                 Buscas Recentes
               </p>
               <button
                 onClick={clearHistory}
-                className="text-xs text-muted-foreground hover:text-foreground transition"
+                className="text-xs text-muted-foreground hover:text-foreground transition focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1"
+                aria-label="Limpar histórico de buscas"
               >
                 Limpar
               </button>
@@ -192,8 +195,8 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
           </div>
         )}
         {error && (
-          <Alert variant="destructive" className="mt-4">
-            <AlertCircle className="h-4 w-4" />
+          <Alert variant="destructive" className="mt-4" role="alert" aria-live="assertive">
+            <AlertCircle className="h-4 w-4" aria-hidden="true" />
             <AlertDescription>
               Erro ao buscar ticker: {error}
             </AlertDescription>
@@ -202,8 +205,8 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
         {/* Loading */}
         {loading && (
-          <div className="flex items-center justify-center py-10 text-muted-foreground gap-2">
-            <Loader2 className="h-5 w-5 animate-spin" />
+          <div className="flex items-center justify-center py-10 text-muted-foreground gap-2" role="status" aria-live="polite">
+            <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
             Carregando predição...
           </div>
         )}
@@ -221,8 +224,8 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
               </CardContent>
             </Card>
 
-            <Button onClick={handleAddStock} className="w-full gap-2">
-              <Plus className="h-4 w-4" />
+            <Button onClick={handleAddStock} className="w-full gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background" aria-label={`Adicionar ${data?.ticker || 'ação'} à sua lista`}>
+              <Plus className="h-4 w-4" aria-hidden="true" />
               Adicionar à Lista
             </Button>
           </div>

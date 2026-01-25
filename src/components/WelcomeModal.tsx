@@ -156,32 +156,34 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleFinish()}>
-      <DialogContent className="max-w-2xl bg-background text-foreground">
+      <DialogContent className="max-w-2xl bg-background text-foreground" role="dialog" aria-labelledby="welcome-title" aria-label={`Tutorial do StockDash - Slide ${currentSlide + 1} de ${slides.length}`}>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <Zap className="h-6 w-6 text-primary" />
+          <DialogTitle id="welcome-title" className="text-2xl font-bold flex items-center gap-2">
+            <Zap className="h-6 w-6 text-primary" aria-hidden="true" />
             {slide.title}
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-2">{slide.subtitle}</p>
         </DialogHeader>
 
         {/* Slide Content */}
-        <div className="py-6 min-h-[300px]">
+        <div className="py-6 min-h-[300px]" role="region" aria-live="polite" aria-label={`Conteúdo do slide ${currentSlide + 1}`}>
           {slide.content}
         </div>
 
         {/* Progress Indicator */}
-        <div className="flex items-center gap-2 justify-center my-4">
+        <div className="flex items-center gap-2 justify-center my-4" role="tablist" aria-label="Indicador de progresso dos slides">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentSlide(i)}
-              className={`h-2 rounded-full transition-all ${
+              className={`h-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background ${
                 i === currentSlide
                   ? 'bg-primary w-8'
                   : 'bg-slate-300 dark:bg-slate-700 w-2 hover:w-3'
               }`}
               aria-label={`Ir para slide ${i + 1}`}
+              aria-selected={i === currentSlide}
+              role="tab"
             />
           ))}
         </div>
@@ -198,9 +200,10 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
                 onClick={handlePrevious}
                 variant="outline"
                 size="sm"
-                className="gap-2"
+                className="gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background"
+                aria-label="Voltar para slide anterior"
               >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
                 Anterior
               </Button>
             )}
@@ -208,9 +211,10 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
               onClick={() => handleFinish()}
               variant="ghost"
               size="sm"
-              className="gap-2"
+              className="gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background"
+              aria-label="Pular o tutorial"
             >
-              <SkipForward className="h-4 w-4" />
+              <SkipForward className="h-4 w-4" aria-hidden="true" />
               Pular
             </Button>
           </div>
@@ -219,19 +223,21 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
             <Button
               onClick={handleFinish}
               size="sm"
-              className="gap-2"
+              className="gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background"
+              aria-label="Finalizar tutorial e começar a usar o dashboard"
             >
-              <Zap className="h-4 w-4" />
+              <Zap className="h-4 w-4" aria-hidden="true" />
               Começar
             </Button>
           ) : (
             <Button
               onClick={handleNext}
               size="sm"
-              className="gap-2"
+              className="gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background"
+              aria-label="Ir para próximo slide"
             >
               Próximo
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           )}
         </div>

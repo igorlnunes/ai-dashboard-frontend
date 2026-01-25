@@ -53,13 +53,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <Card>
-      <CardContent className="p-3 sm:p-4 flex flex-col lg:flex-row gap-2 sm:gap-3 lg:gap-4 lg:items-center lg:justify-between">
+      <CardContent className="p-3 sm:p-4 flex flex-col lg:flex-row gap-2 sm:gap-3 lg:gap-4 lg:items-center lg:justify-between" role="group" aria-label="Filtros e ordenação">
         <div className="flex flex-col lg:flex-row gap-2 sm:gap-3 lg:gap-4 lg:items-center flex-1">
           {/* Ordenação */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
+            <label htmlFor="sort-select" className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap font-medium">
               Ordenar por:
-            </span>
+            </label>
 
             <Select
               value={sortBy}
@@ -67,7 +67,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 onSortChange(value as SortOption)
               }
             >
-              <SelectTrigger className="w-full sm:w-56">
+              <SelectTrigger id="sort-select" className="w-full sm:w-56" aria-label="Selecione a opção de ordenação">
                 <SelectValue placeholder="Selecione" />
               </SelectTrigger>
 
@@ -102,7 +102,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
           {/* Filtro */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
+            <span id="filter-legend" className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap font-medium">
               Filtrar por:
             </span>
 
@@ -113,13 +113,15 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 value && onFilterChange(value as FilterOption)
               }
               className="flex gap-0.5 sm:gap-1 flex-wrap"
+              aria-labelledby="filter-legend"
             >
-              <ToggleGroupItem value="all">
+              <ToggleGroupItem value="all" aria-label="Mostrar todas as previsões">
                 Todas
               </ToggleGroupItem>
 
               <ToggleGroupItem
                 value="buy"
+                aria-label="Mostrar apenas previsões de compra (BUY)"
                 className="data-[state=on]:bg-emerald-500 data-[state=on]:text-white"
               >
                 BUY
@@ -127,6 +129,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
               <ToggleGroupItem
                 value="hold"
+                aria-label="Mostrar apenas previsões de manutenção (HOLD)"
                 className="data-[state=on]:bg-yellow-500 data-[state=on]:text-white"
               >
                 HOLD
@@ -134,6 +137,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
               <ToggleGroupItem
                 value="sell"
+                aria-label="Mostrar apenas previsões de venda (SELL)"
                 className="data-[state=on]:bg-red-500 data-[state=on]:text-white"
               >
                 SELL
@@ -148,10 +152,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
             onClick={handleReset}
             variant="outline"
             size="sm"
-            className="gap-2 whitespace-nowrap w-full sm:w-auto"
-            aria-label="Resetar filtros"
+            className="gap-2 whitespace-nowrap w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-900"
+            aria-label="Resetar filtros para padrão (Ticker A–Z, Todas as previsões)"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Resetar Filtros
           </Button>
         )}
