@@ -1,0 +1,50 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { ChevronRight, ChevronLeft, SkipForward, Zap } from 'lucide-react';
+export function WelcomeModal({ isOpen, onClose }) {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const slides = [
+        {
+            title: '📊 Bem-vindo ao StockDash',
+            subtitle: 'Seu dashboard de previsões de ações com IA',
+            content: (_jsxs("div", { className: "space-y-4", children: [_jsx("p", { className: "text-foreground", children: "StockDash usa modelos de machine learning para prever movimentos de a\u00E7\u00F5es em tempo real." }), _jsxs("div", { className: "bg-slate-100 dark:bg-slate-800 rounded-lg p-4 space-y-2", children: [_jsx("p", { className: "text-sm font-semibold text-foreground", children: "O que voc\u00EA pode fazer:" }), _jsxs("ul", { className: "text-sm text-muted-foreground space-y-1", children: [_jsx("li", { children: "\u2713 Buscar qualquer a\u00E7\u00E3o (ticker symbol)" }), _jsx("li", { children: "\u2713 Ver previs\u00F5es: BUY, HOLD, SELL" }), _jsx("li", { children: "\u2713 Acompanhar confian\u00E7a das previs\u00F5es" }), _jsx("li", { children: "\u2713 Monitorar m\u00FAltiplas a\u00E7\u00F5es simultaneamente" })] })] })] })),
+        },
+        {
+            title: '🔍 Buscar & Filtrar',
+            subtitle: 'Encontre as ações que você procura',
+            content: (_jsxs("div", { className: "space-y-4", children: [_jsx("p", { className: "text-foreground", children: "Use a barra de busca para procurar por tickers de a\u00E7\u00F5es." }), _jsxs("div", { className: "bg-slate-100 dark:bg-slate-800 rounded-lg p-4 space-y-3", children: [_jsxs("div", { children: [_jsx("p", { className: "text-sm font-semibold text-foreground mb-2", children: "\uD83D\uDCA1 Dicas:" }), _jsxs("ul", { className: "text-sm text-muted-foreground space-y-1", children: [_jsx("li", { children: "\u2022 Digite AAPL, TSLA, GOOGL, etc." }), _jsx("li", { children: "\u2022 Buscas recentes aparecem abaixo" }), _jsx("li", { children: "\u2022 Use filtros para organizar por previs\u00E3o" })] })] }), _jsx("div", { className: "bg-emerald-50 dark:bg-emerald-900/20 rounded p-2 border border-emerald-200 dark:border-emerald-800", children: _jsx("p", { className: "text-xs text-emerald-700 dark:text-emerald-300", children: "\u2728 Seu hist\u00F3rico \u00E9 salvo! Volte e voc\u00EA ver\u00E1 suas \u00FAltimas buscas." }) })] })] })),
+        },
+        {
+            title: '📈 Entendendo as Previsões',
+            subtitle: 'O que significam BUY, HOLD e SELL',
+            content: (_jsxs("div", { className: "space-y-3", children: [_jsxs("div", { className: "space-y-3", children: [_jsxs("div", { className: "border-l-4 border-emerald-500 pl-3 py-2", children: [_jsx("p", { className: "font-semibold text-emerald-700 dark:text-emerald-400", children: "BUY" }), _jsx("p", { className: "text-sm text-foreground", children: "Modelo prev\u00EA alta de pre\u00E7o. Bom momento para comprar." })] }), _jsxs("div", { className: "border-l-4 border-amber-500 pl-3 py-2", children: [_jsx("p", { className: "font-semibold text-amber-700 dark:text-amber-400", children: "HOLD" }), _jsx("p", { className: "text-sm text-foreground", children: "Pre\u00E7o deve estabilizar. Mantenha suas posi\u00E7\u00F5es." })] }), _jsxs("div", { className: "border-l-4 border-red-500 pl-3 py-2", children: [_jsx("p", { className: "font-semibold text-red-700 dark:text-red-400", children: "SELL" }), _jsx("p", { className: "text-sm text-foreground", children: "Modelo prev\u00EA queda de pre\u00E7o. Considere vender." })] })] }), _jsxs("div", { className: "bg-blue-50 dark:bg-blue-900/20 rounded p-3 border border-blue-200 dark:border-blue-800 mt-4", children: [_jsx("p", { className: "text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1", children: "\u26A1 Importante:" }), _jsx("p", { className: "text-xs text-blue-600 dark:text-blue-300", children: "Estas s\u00E3o previs\u00F5es algor\u00EDtmicas. Sempre fa\u00E7a sua pr\u00F3pria pesquisa antes de investir!" })] })] })),
+        },
+        {
+            title: '🚀 Como Usar o Dashboard',
+            subtitle: 'Seu primeiro passo',
+            content: (_jsxs("div", { className: "space-y-4", children: [_jsxs("ol", { className: "space-y-3", children: [_jsxs("li", { className: "flex gap-3", children: [_jsx("span", { className: "flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold", children: "1" }), _jsxs("div", { children: [_jsx("p", { className: "font-semibold text-foreground", children: "Procure uma a\u00E7\u00E3o" }), _jsx("p", { className: "text-sm text-muted-foreground", children: "Use o bot\u00E3o \uD83D\uDD0D para procurar por ticker" })] })] }), _jsxs("li", { className: "flex gap-3", children: [_jsx("span", { className: "flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold", children: "2" }), _jsxs("div", { children: [_jsx("p", { className: "font-semibold text-foreground", children: "Veja a previs\u00E3o" }), _jsx("p", { className: "text-sm text-muted-foreground", children: "Analise BUY/HOLD/SELL e a confian\u00E7a" })] })] }), _jsxs("li", { className: "flex gap-3", children: [_jsx("span", { className: "flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold", children: "3" }), _jsxs("div", { children: [_jsx("p", { className: "font-semibold text-foreground", children: "Clique \"Adicionar\"" }), _jsx("p", { className: "text-sm text-muted-foreground", children: "A a\u00E7\u00E3o aparecer\u00E1 no seu painel" })] })] }), _jsxs("li", { className: "flex gap-3", children: [_jsx("span", { className: "flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold", children: "4" }), _jsxs("div", { children: [_jsx("p", { className: "font-semibold text-foreground", children: "Acompanhe" }), _jsx("p", { className: "text-sm text-muted-foreground", children: "Filtre, ordene e monitore suas a\u00E7\u00F5es" })] })] })] }), _jsx("div", { className: "bg-amber-50 dark:bg-amber-900/20 rounded p-3 border border-amber-200 dark:border-amber-800 mt-4", children: _jsx("p", { className: "text-xs text-amber-700 dark:text-amber-300", children: "\uD83D\uDCA1 Voc\u00EA pode revisar este tutorial a qualquer momento!" }) })] })),
+        },
+    ];
+    const slide = slides[currentSlide];
+    const isLastSlide = currentSlide === slides.length - 1;
+    const isFirstSlide = currentSlide === 0;
+    const handleNext = () => {
+        if (!isLastSlide) {
+            setCurrentSlide(currentSlide + 1);
+        }
+    };
+    const handlePrevious = () => {
+        if (!isFirstSlide) {
+            setCurrentSlide(currentSlide - 1);
+        }
+    };
+    const handleFinish = () => {
+        localStorage.setItem('stockdash_seen_welcome', 'true');
+        onClose();
+    };
+    return (_jsx(Dialog, { open: isOpen, onOpenChange: (open) => !open && handleFinish(), children: _jsxs(DialogContent, { className: "max-w-2xl bg-background text-foreground", children: [_jsxs(DialogHeader, { children: [_jsxs(DialogTitle, { className: "text-2xl font-bold flex items-center gap-2", children: [_jsx(Zap, { className: "h-6 w-6 text-primary" }), slide.title] }), _jsx("p", { className: "text-sm text-muted-foreground mt-2", children: slide.subtitle })] }), _jsx("div", { className: "py-6 min-h-[300px]", children: slide.content }), _jsx("div", { className: "flex items-center gap-2 justify-center my-4", children: slides.map((_, i) => (_jsx("button", { onClick: () => setCurrentSlide(i), className: `h-2 rounded-full transition-all ${i === currentSlide
+                            ? 'bg-primary w-8'
+                            : 'bg-slate-300 dark:bg-slate-700 w-2 hover:w-3'}`, "aria-label": `Ir para slide ${i + 1}` }, i))) }), _jsxs("p", { className: "text-xs text-muted-foreground text-center mb-4", children: ["Slide ", currentSlide + 1, " de ", slides.length] }), _jsxs("div", { className: "flex gap-2 justify-between", children: [_jsxs("div", { className: "flex gap-2", children: [!isFirstSlide && (_jsxs(Button, { onClick: handlePrevious, variant: "outline", size: "sm", className: "gap-2", children: [_jsx(ChevronLeft, { className: "h-4 w-4" }), "Anterior"] })), _jsxs(Button, { onClick: () => handleFinish(), variant: "ghost", size: "sm", className: "gap-2", children: [_jsx(SkipForward, { className: "h-4 w-4" }), "Pular"] })] }), isLastSlide ? (_jsxs(Button, { onClick: handleFinish, size: "sm", className: "gap-2", children: [_jsx(Zap, { className: "h-4 w-4" }), "Come\u00E7ar"] })) : (_jsxs(Button, { onClick: handleNext, size: "sm", className: "gap-2", children: ["Pr\u00F3ximo", _jsx(ChevronRight, { className: "h-4 w-4" })] }))] })] }) }));
+}

@@ -7,6 +7,7 @@ import FilterBar, {
 } from "./components/FilterBar";
 import StockGrid from "./components/StockGrid";
 import SearchModal from "./components/SearchModal";
+import { WelcomeModal } from "./components/WelcomeModal";
 
 import { useStockList } from "./hooks/useStockList";
 import { sortStocks, filterStocks } from "./utils/sortAndFilter";
@@ -18,6 +19,7 @@ import { AlertCircle } from "lucide-react";
 
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWelcomeOpen, setIsWelcomeOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("ticker-asc");
   const [filterBy, setFilterBy] = useState<FilterOption>("all");
 
@@ -39,6 +41,12 @@ function AppContent() {
     loadDefaultStocks().catch((err) => {
       console.error("Erro ao carregar ações padrão:", err);
     });
+
+    // Check if user has seen welcome modal
+    const hasSeenWelcome = localStorage.getItem('stockdash_seen_welcome');
+    if (!hasSeenWelcome) {
+      setIsWelcomeOpen(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -83,6 +91,12 @@ function AppContent() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddStock={addStockDirectly}
+      />
+
+      {/* Welcome Modal */}
+      <WelcomeModal
+        isOpen={isWelcomeOpen}
+        onClose={() => setIsWelcomeOpen(false)}
       />
     </div>
   );
