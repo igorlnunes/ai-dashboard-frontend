@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import type { PredictionSignal } from "../../types/api";
 
 import {
@@ -43,11 +43,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onFilterChange,
   onReset,
 }) => {
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     onReset?.();
     onSortChange("ticker-asc");
     onFilterChange("all");
-  };
+  }, [onReset, onSortChange, onFilterChange]);
 
   const isFiltered = sortBy !== "ticker-asc" || filterBy !== "all";
 

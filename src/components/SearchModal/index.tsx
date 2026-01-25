@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent, type ChangeEvent } from "react";
+import { useState, useEffect, useCallback, type FormEvent, type ChangeEvent } from "react";
 import { usePrediction } from "../../hooks/usePrediction";
 import { getTickerInfo } from "../../services/apiService";
 
@@ -46,7 +46,7 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
     }
   }, [ticker, refetch]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchTicker.trim()) {
       const upperTicker = searchTicker.toUpperCase();
@@ -60,26 +60,26 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
       setSearchHistory(updated);
       localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
     }
-  };
+  }, [searchTicker, searchHistory]);
 
-  const handleHistoryClick = (historyTicker: string) => {
+  const handleHistoryClick = useCallback((historyTicker: string) => {
     setSearchTicker(historyTicker);
     setTicker(historyTicker);
-  };
+  }, []);
 
-  const clearHistory = () => {
+  const clearHistory = useCallback(() => {
     setSearchHistory([]);
     localStorage.removeItem(SEARCH_HISTORY_KEY);
-  };
+  }, []);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setSearchTicker(e.target.value.toUpperCase());
-  };
+  }, []);
 
-  const handleDropdownChange = (value: string) => {
+  const handleDropdownChange = useCallback((value: string) => {
     setTicker(value);
     setSearchTicker(value);
-  };
+  }, []);
 
   const handleAddStock = async () => {
     if (!data) return;

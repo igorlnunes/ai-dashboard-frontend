@@ -4,6 +4,7 @@ import { TrendingUp, TrendingDown, Activity, Shield, Clock } from "lucide-react"
 import Tooltip from "@/components/ui/tooltip";
 import Sparkline from "../Sparkline";
 import type { PredictionData } from "../../types/api";
+import { useMemo, memo } from "react";
 
 interface StockCardProps {
   data: PredictionData;
@@ -11,32 +12,47 @@ interface StockCardProps {
   peRatio?: number;
 }
 
-export function StockCard({ data, companyName, peRatio }: StockCardProps) {
-  const latestPrice =
-    data.price_data?.at(-1)?.close ?? 0;
+function StockCardComponent({ data, companyName, peRatio }: StockCardProps) {
+  // Memoize price calculations
+  const latestPrice = useMemo(
+    () => data.price_data?.at(-1)?.close ?? 0,
+    [data.price_data]
+  );
 
-  const previousPrice =
-    data.price_data?.at(-2)?.close ?? latestPrice;
+  const previousPrice = useMemo(
+    () => data.price_data?.at(-2)?.close ?? latestPrice,
+    [data.price_data, latestPrice]
+  );
 
-  const priceChange = latestPrice - previousPrice;
-  const priceChangePercent =
-    previousPrice !== 0
-      ? ((priceChange / previousPrice) * 100).toFixed(2)
-      : "0.00";
+  const priceChange = useMemo(
+    () => latestPrice - previousPrice,
+    [latestPrice, previousPrice]
+  );
 
-  const isPositive = priceChange >= 0;
+  const priceChangePercent = useMemo(
+    () => previousPrice !== 0 ? ((priceChange / previousPrice) * 100).toFixed(2) : "0.00",
+    [previousPrice, priceChange]
+  );
 
-  const totalVolume = data.price_data?.at(-1)?.volume ?? 0;
+  const isPositive = useMemo(() => priceChange >= 0, [priceChange]);
 
-  const volumeFormatted =
-    totalVolume >= 1_000_000
+  const totalVolume = useMemo(
+    () => data.price_data?.at(-1)?.volume ?? 0,
+    [data.price_data]
+  );
+
+  const volumeFormatted = useMemo(() => {
+    return totalVolume >= 1_000_000
       ? `${(totalVolume / 1_000_000).toFixed(1)}M`
       : totalVolume >= 1_000
       ? `${(totalVolume / 1_000).toFixed(1)}K`
       : totalVolume.toFixed(0);
+  }, [totalVolume]);
 
-  const sparklineData =
-    data.price_data?.slice(-20).map(p => p.close) ?? [];
+  const sparklineData = useMemo(
+    () => data.price_data?.slice(-20).map(p => p.close) ?? [],
+    [data.price_data]
+  );
 
   const calculateVolatility = (prices: number[]) => {
     if (prices.length < 2) return "Média";
@@ -52,15 +68,15 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
     return "Alta";
   };
 
-  const volatility =
-    sparklineData.length > 0
-      ? calculateVolatility(sparklineData)
-      : "Média";
+  const volatility = useMemo(
+    () => sparklineData.length > 0 ? calculateVolatility(sparklineData) : "Média",
+    [sparklineData]
+  );
 
   const confidenceValue = data.confidence * 100;
 
-  // Função para renderizar badge de previsão com ícone
-  const getPredictionBadgeContent = () => {
+  // Memoize prediction badge content
+  const predictionContent = useMemo(() => {
     switch (data.prediction) {
       case 'BUY':
         return {
@@ -87,28 +103,31 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
           tooltip: 'Modelo prevê estabilidade de preço nos próximos dias'
         };
     }
-  };
+  }, [data.prediction]);
 
-  const predictionContent = getPredictionBadgeContent();
+  // Memoize confidence color and position
+  const { confidenceColor, predictionPosition } = useMemo(() => {
+    const getConfidenceColor = () => {
+      if (confidenceValue >= 80) return 'bg-green-500 dark:bg-green-600';
+      if (confidenceValue >= 60) return 'bg-amber-500 dark:bg-amber-600';
+      return 'bg-red-500 dark:bg-red-600';
+    };
 
-  // Cor da barra de confiança
-  const getConfidenceColor = () => {
-    if (confidenceValue >= 80) return 'bg-green-500 dark:bg-green-600';
-    if (confidenceValue >= 60) return 'bg-amber-500 dark:bg-amber-600';
-    return 'bg-red-500 dark:bg-red-600';
-  };
+    let position = 0;
+    if (data.prediction === "BUY") {
+      position = 60 + (confidenceValue / 100) * 40;
+    } else if (data.prediction === "HOLD") {
+      position = 40 + (confidenceValue / 100) * 20;
+    } else {
+      position = (confidenceValue / 100) * 40;
+    }
+    position = Math.min(100, Math.max(0, position));
 
-  let predictionPosition = 0;
-
-  if (data.prediction === "BUY") {
-    predictionPosition = 60 + (confidenceValue / 100) * 40;
-  } else if (data.prediction === "HOLD") {
-    predictionPosition = 40 + (confidenceValue / 100) * 20;
-  } else {
-    predictionPosition = (confidenceValue / 100) * 40;
-  }
-
-  predictionPosition = Math.min(100, Math.max(0, predictionPosition));
+    return {
+      confidenceColor: getConfidenceColor(),
+      predictionPosition: position
+    };
+  }, [confidenceValue, data.prediction]);
 
   return (
     <Card className="rounded-lg sm:rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800 animate-in fade-in duration-500">
@@ -175,7 +194,7 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
           </div>
           <div className="w-full bg-secondary dark:bg-slate-700 rounded-full h-2 sm:h-3 overflow-hidden">
             <div
-              className={`h-full ${getConfidenceColor()} transition-all duration-500`}
+              className={`h-full ${confidenceColor} transition-all duration-500`}
               style={{ width: `${confidenceValue}%` }}
             />
           </div>
@@ -274,3 +293,6 @@ export function StockCard({ data, companyName, peRatio }: StockCardProps) {
     </Card>
   );
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export const StockCard = memo(StockCardComponent);

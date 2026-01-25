@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { usePrediction } from "../../hooks/usePrediction";
 import { getTickerInfo } from "../../services/apiService";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -34,7 +34,7 @@ export default function SearchModal({ isOpen, onClose, onAddStock }) {
             refetch();
         }
     }, [ticker, refetch]);
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
         if (searchTicker.trim()) {
             const upperTicker = searchTicker.toUpperCase();
@@ -47,22 +47,22 @@ export default function SearchModal({ isOpen, onClose, onAddStock }) {
             setSearchHistory(updated);
             localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
         }
-    };
-    const handleHistoryClick = (historyTicker) => {
+    }, [searchTicker, searchHistory]);
+    const handleHistoryClick = useCallback((historyTicker) => {
         setSearchTicker(historyTicker);
         setTicker(historyTicker);
-    };
-    const clearHistory = () => {
+    }, []);
+    const clearHistory = useCallback(() => {
         setSearchHistory([]);
         localStorage.removeItem(SEARCH_HISTORY_KEY);
-    };
-    const handleInputChange = (e) => {
+    }, []);
+    const handleInputChange = useCallback((e) => {
         setSearchTicker(e.target.value.toUpperCase());
-    };
-    const handleDropdownChange = (value) => {
+    }, []);
+    const handleDropdownChange = useCallback((value) => {
         setTicker(value);
         setSearchTicker(value);
-    };
+    }, []);
     const handleAddStock = async () => {
         if (!data)
             return;

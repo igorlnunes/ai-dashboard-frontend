@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, memo } from "react";
 import { cn } from "@/lib/utils";
 
 interface SparklineProps {
@@ -8,12 +8,37 @@ interface SparklineProps {
   className?: string;
 }
 
-export default function Sparkline({
+function SparklineComponent({
   data,
   width = 120,
   height = 40,
   className,
 }: SparklineProps) {
+  // Memoize SVG path calculations
+  const { points, isPositive, min, max } = useMemo(() => {
+    if (!data || data.length === 0) {
+      return { points: "", isPositive: false, min: 0, max: 0 };
+    }
+
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    const range = max - min || 1;
+
+    const points = data
+      .map((value, index) => {
+        const x = (index / (data.length - 1)) * width;
+        const y = height - ((value - min) / range) * height;
+        return `${x},${y}`;
+      })
+      .join(" ");
+
+    const firstValue = data[0];
+    const lastValue = data[data.length - 1];
+    const isPositive = lastValue >= firstValue;
+
+    return { points, isPositive, min, max };
+  }, [data, width, height]);
+
   if (!data || data.length === 0) {
     return (
       <div className="flex h-10 items-center justify-center text-xs text-muted-foreground">
@@ -22,21 +47,7 @@ export default function Sparkline({
     );
   }
 
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const range = max - min || 1;
-
-  const points = data
-    .map((value, index) => {
-      const x = (index / (data.length - 1)) * width;
-      const y = height - ((value - min) / range) * height;
-      return `${x},${y}`;
-    })
-    .join(" ");
-
-  const firstValue = data[0];
-  const lastValue = data[data.length - 1];
-  const isPositive = lastValue >= firstValue;
+  const polygonPoints = `0,${height} ${points} ${width},${height}`;
 
   return (
     <div className={cn("flex items-center", className)}>
@@ -49,7 +60,7 @@ export default function Sparkline({
       >
         {/* Área preenchida */}
         <polygon
-          points={`0,${height} ${points} ${width},${height}`}
+          points={polygonPoints}
           className={cn(
             "transition-colors",
             isPositive
@@ -76,3 +87,6 @@ export default function Sparkline({
     </div>
   );
 }
+
+// Memoize the component
+export default memo(SparklineComponent);

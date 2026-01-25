@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft, SkipForward, Zap } from 'lucide-react';
@@ -137,22 +137,22 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
   const isLastSlide = currentSlide === slides.length - 1;
   const isFirstSlide = currentSlide === 0;
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (!isLastSlide) {
       setCurrentSlide(currentSlide + 1);
     }
-  };
+  }, [currentSlide, isLastSlide]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (!isFirstSlide) {
       setCurrentSlide(currentSlide - 1);
     }
-  };
+  }, [currentSlide, isFirstSlide]);
 
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     localStorage.setItem('stockdash_seen_welcome', 'true');
     onClose();
-  };
+  }, [onClose]);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleFinish()}>
