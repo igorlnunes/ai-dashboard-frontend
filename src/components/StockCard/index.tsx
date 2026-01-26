@@ -130,14 +130,14 @@ function StockCardComponent({ data, companyName, peRatio }: StockCardProps) {
   }, [confidenceValue, data.prediction]);
 
   return (
-    <Card className="rounded-lg sm:rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800 animate-in fade-in duration-500">
+    <Card className="rounded-lg sm:rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 dark:bg-slate-900 dark:border-slate-800/60 dark:shadow-lg dark:hover:shadow-2xl animate-in fade-in duration-500">
       <CardHeader className="flex flex-col sm:flex-row items-start justify-between pb-2 sm:pb-3 gap-2">
         <div className="flex-1 min-w-0">
-          <CardTitle className="text-xl sm:text-2xl font-bold truncate">
+          <CardTitle className="text-xl sm:text-2xl font-bold truncate dark:text-slate-50">
             {data.ticker}
           </CardTitle>
           {companyName && (
-            <p className="text-xs sm:text-sm text-muted-foreground truncate">
+            <p className="text-xs sm:text-sm text-muted-foreground dark:text-slate-400 truncate">
               {companyName}
             </p>
           )}
@@ -158,7 +158,7 @@ function StockCardComponent({ data, companyName, peRatio }: StockCardProps) {
       <CardContent className="space-y-3 sm:space-y-5">
         {/* Preço */}
         <div>
-          <div className="text-3xl sm:text-4xl font-extrabold">
+          <div className="text-3xl sm:text-4xl font-extrabold dark:text-slate-50">
             ${latestPrice.toFixed(2)}
           </div>
 
@@ -173,8 +173,8 @@ function StockCardComponent({ data, companyName, peRatio }: StockCardProps) {
           </div>
 
           {sparklineData.length > 0 && (
-            <div className="mt-2 sm:mt-3 bg-muted/30 dark:bg-slate-800/50 rounded-lg p-2">
-              <div className="text-[11px] sm:text-xs text-muted-foreground mb-1">
+            <div className="mt-2 sm:mt-3 bg-muted/30 dark:bg-slate-800/70 rounded-lg p-2">
+              <div className="text-[11px] sm:text-xs text-muted-foreground dark:text-slate-400 mb-1">
                 Últimos {sparklineData.length} dias
               </div>
               <Sparkline data={sparklineData} width={200} height={40} />
@@ -186,13 +186,13 @@ function StockCardComponent({ data, companyName, peRatio }: StockCardProps) {
         <div className="space-y-1.5">
           <div className="flex justify-between items-center gap-2">
             <Tooltip text={`Nível de certeza: ${confidenceValue >= 80 ? 'Alto' : confidenceValue >= 60 ? 'Médio' : 'Baixo'}`}>
-              <p className="text-xs sm:text-sm font-semibold text-muted-foreground cursor-help">
+              <p className="text-xs sm:text-sm font-semibold text-muted-foreground dark:text-slate-400 cursor-help">
                 Confiança
               </p>
             </Tooltip>
-            <span className="text-xs sm:text-sm font-bold">{confidenceValue.toFixed(1)}%</span>
+            <span className="text-xs sm:text-sm font-bold dark:text-slate-50">{confidenceValue.toFixed(1)}%</span>
           </div>
-          <div className="w-full bg-secondary dark:bg-slate-700 rounded-full h-2 sm:h-3 overflow-hidden">
+          <div className="w-full bg-secondary dark:bg-slate-700/70 rounded-full h-2 sm:h-3 overflow-hidden">
             <div
               className={`h-full ${confidenceColor} transition-all duration-500`}
               style={{ width: `${confidenceValue}%` }}

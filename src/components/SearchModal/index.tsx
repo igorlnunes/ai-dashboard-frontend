@@ -115,9 +115,9 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-3xl bg-background text-foreground z-50 pointer-events-auto" role="dialog" aria-labelledby="search-modal-title" aria-describedby="search-modal-description">
+      <DialogContent className="max-w-3xl bg-background dark:bg-slate-900 dark:border-slate-800 text-foreground dark:text-slate-50 z-50 pointer-events-auto" role="dialog" aria-labelledby="search-modal-title" aria-describedby="search-modal-description">
         <DialogHeader>
-          <DialogTitle id="search-modal-title" className="flex items-center gap-2">
+          <DialogTitle id="search-modal-title" className="flex items-center gap-2 dark:text-slate-50">
             <Search className="h-5 w-5 text-primary" aria-hidden="true" />
             Buscar Ação
           </DialogTitle>
@@ -130,15 +130,15 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
             value={searchTicker}
             onChange={handleInputChange}
             placeholder="Digite o ticker (ex: AAPL, TSLA, GOOGL)"
-            className="flex-1 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-800 dark:border-slate-700 dark:text-slate-50 dark:placeholder-slate-500"
             aria-label="Insira o símbolo do ticker da ação que deseja pesquisar"
           />
 
           <Select onValueChange={handleDropdownChange}>
-            <SelectTrigger className="w-[150px]" aria-label="Selecione uma ação popular">
+            <SelectTrigger className="w-[150px] dark:bg-slate-800 dark:border-slate-700 dark:text-slate-50" aria-label="Selecione uma ação popular">
               <SelectValue placeholder="Populares" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="dark:bg-slate-800 dark:border-slate-700">
               <SelectItem value="AAPL">Apple (AAPL)</SelectItem>
               <SelectItem value="TSLA">Tesla (TSLA)</SelectItem>
               <SelectItem value="GOOGL">Google (GOOGL)</SelectItem>
@@ -151,7 +151,7 @@ export default function SearchModal({ isOpen, onClose, onAddStock }: SearchModal
           <Button
             type="submit"
             disabled={loading || !searchTicker.trim()}
-            className="gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background"
+            className="gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-900"
             aria-label={loading ? "Buscando informações" : "Buscar previsão da ação"}
           >
             {loading ? (

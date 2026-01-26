@@ -17,12 +17,12 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
       subtitle: 'Seu dashboard de previsões de ações com IA',
       content: (
         <div className="space-y-4">
-          <p className="text-foreground">
+          <p className="text-foreground dark:text-slate-200">
             StockDash usa modelos de machine learning para prever movimentos de ações em tempo real.
           </p>
-          <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 space-y-2">
-            <p className="text-sm font-semibold text-foreground">O que você pode fazer:</p>
-            <ul className="text-sm text-muted-foreground space-y-1">
+          <div className="bg-slate-100 dark:bg-slate-800/70 dark:border dark:border-slate-700 rounded-lg p-4 space-y-2">
+            <p className="text-sm font-semibold text-foreground dark:text-slate-50">O que você pode fazer:</p>
+            <ul className="text-sm text-muted-foreground dark:text-slate-400 space-y-1">
               <li>✓ Buscar qualquer ação (ticker symbol)</li>
               <li>✓ Ver previsões: BUY, HOLD, SELL</li>
               <li>✓ Acompanhar confiança das previsões</li>
@@ -37,19 +37,19 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
       subtitle: 'Encontre as ações que você procura',
       content: (
         <div className="space-y-4">
-          <p className="text-foreground">
+          <p className="text-foreground dark:text-slate-200">
             Use a barra de busca para procurar por tickers de ações.
           </p>
-          <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 space-y-3">
+          <div className="bg-slate-100 dark:bg-slate-800/70 dark:border dark:border-slate-700 rounded-lg p-4 space-y-3">
             <div>
-              <p className="text-sm font-semibold text-foreground mb-2">💡 Dicas:</p>
-              <ul className="text-sm text-muted-foreground space-y-1">
+              <p className="text-sm font-semibold text-foreground dark:text-slate-50 mb-2">💡 Dicas:</p>
+              <ul className="text-sm text-muted-foreground dark:text-slate-400 space-y-1">
                 <li>• Digite AAPL, TSLA, GOOGL, etc.</li>
                 <li>• Buscas recentes aparecem abaixo</li>
                 <li>• Use filtros para organizar por previsão</li>
               </ul>
             </div>
-            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded p-2 border border-emerald-200 dark:border-emerald-800">
+            <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded p-2 border border-emerald-200 dark:border-emerald-800/50">
               <p className="text-xs text-emerald-700 dark:text-emerald-300">
                 ✨ Seu histórico é salvo! Volte e você verá suas últimas buscas.
               </p>
@@ -66,19 +66,19 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
           <div className="space-y-3">
             <div className="border-l-4 border-emerald-500 pl-3 py-2">
               <p className="font-semibold text-emerald-700 dark:text-emerald-400">BUY</p>
-              <p className="text-sm text-foreground">Modelo prevê alta de preço. Bom momento para comprar.</p>
+              <p className="text-sm text-foreground dark:text-slate-200">Modelo prevê alta de preço. Bom momento para comprar.</p>
             </div>
             <div className="border-l-4 border-amber-500 pl-3 py-2">
               <p className="font-semibold text-amber-700 dark:text-amber-400">HOLD</p>
-              <p className="text-sm text-foreground">Preço deve estabilizar. Mantenha suas posições.</p>
+              <p className="text-sm text-foreground dark:text-slate-200">Preço deve estabilizar. Mantenha suas posições.</p>
             </div>
             <div className="border-l-4 border-red-500 pl-3 py-2">
               <p className="font-semibold text-red-700 dark:text-red-400">SELL</p>
-              <p className="text-sm text-foreground">Modelo prevê queda de preço. Considere vender.</p>
+              <p className="text-sm text-foreground dark:text-slate-200">Modelo prevê queda de preço. Considere vender.</p>
             </div>
           </div>
 
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded p-3 border border-blue-200 dark:border-blue-800 mt-4">
+          <div className="bg-blue-50 dark:bg-blue-900/30 rounded p-3 border border-blue-200 dark:border-blue-800/50 mt-4">
             <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">⚡ Importante:</p>
             <p className="text-xs text-blue-600 dark:text-blue-300">
               Estas são previsões algorítmicas. Sempre faça sua própria pesquisa antes de investir!
@@ -96,28 +96,28 @@ export function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">1</span>
               <div>
-                <p className="font-semibold text-foreground">Procure uma ação</p>
-                <p className="text-sm text-muted-foreground">Use o botão 🔍 para procurar por ticker</p>
+                <p className="font-semibold text-foreground dark:text-slate-50">Procure uma ação</p>
+                <p className="text-sm text-muted-foreground dark:text-slate-400">Use o botão 🔍 para procurar por ticker</p>
               </div>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">2</span>
               <div>
-                <p className="font-semibold text-foreground">Veja a previsão</p>
-                <p className="text-sm text-muted-foreground">Analise BUY/HOLD/SELL e a confiança</p>
+                <p className="font-semibold text-foreground dark:text-slate-50">Veja a previsão</p>
+                <p className="text-sm text-muted-foreground dark:text-slate-400">Analise BUY/HOLD/SELL e a confiança</p>
               </div>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">3</span>
               <div>
-                <p className="font-semibold text-foreground">Clique "Adicionar"</p>
-                <p className="text-sm text-muted-foreground">A ação aparecerá no seu painel</p>
+                <p className="font-semibold text-foreground dark:text-slate-50">Clique "Adicionar"</p>
+                <p className="text-sm text-muted-foreground dark:text-slate-400">A ação aparecerá no seu painel</p>
               </div>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">4</span>
               <div>
-                <p className="font-semibold text-foreground">Acompanhe</p>
+                <p className="font-semibold text-foreground dark:text-slate-50">Acompanhe</p>
                 <p className="text-sm text-muted-foreground">Filtre, ordene e monitore suas ações</p>
               </div>
             </li>

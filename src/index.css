@@ -129,37 +129,37 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(0.12 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.19 0 0);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.19 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.67 0.16 264.5);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.35 0.08 280);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.28 0 0);
+  --muted-foreground: oklch(0.75 0 0);
+  --accent: oklch(0.65 0.14 280);
+  --accent-foreground: oklch(0.12 0 0);
+  --destructive: oklch(0.7 0.2 25);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.67 0.16 264.5);
+  --chart-1: oklch(0.65 0.22 264);
+  --chart-2: oklch(0.72 0.18 162);
+  --chart-3: oklch(0.78 0.2 70);
+  --chart-4: oklch(0.68 0.22 303);
+  --chart-5: oklch(0.68 0.22 16);
+  --sidebar: oklch(0.19 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.67 0.16 264.5);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.65 0.14 280);
+  --sidebar-accent-foreground: oklch(0.12 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.67 0.16 264.5);
 }
 
 /* 
@@ -173,7 +173,90 @@
 }
 } */
 
-/* Shimmer animation for skeleton loaders */
+/* Typography & Base Styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1;
+}
+
+.dark {
+  letter-spacing: 0.3px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+p, span, div, a, button {
+  line-height: 1.5;
+}
+
+.dark p, .dark span, .dark div, .dark a, .dark button {
+  letter-spacing: 0.2px;
+}
+
+/* Card & Component Elevation in Dark Mode */
+.dark [class*="card"],
+.dark [class*="Card"] {
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark [class*="card"]:hover,
+.dark [class*="Card"]:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Input & Form Elements */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--input);
+  color: var(--foreground);
+  border-color: var(--border);
+  font-family: inherit;
+  letter-spacing: inherit;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--muted-foreground);
+  opacity: 0.7;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px var(--ring);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+/* Links in Dark Mode */
+.dark a {
+  color: var(--primary);
+  transition: color 0.2s ease;
+}
+
+.dark a:hover {
+  color: var(--accent);
+}
+
+/* Button States */
+.dark button {
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dark button:active {
+  transform: scale(0.98);
+}
 @keyframes shimmer {
   0% {
     background-position: -200% center;
@@ -225,11 +308,69 @@
 /* Glow animation for focus states */
 @keyframes glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 8px rgba(103, 80, 164, 0.4), 0 0 12px rgba(103, 80, 164, 0.2);
   }
   50% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 16px rgba(103, 80, 164, 0.6), 0 0 20px rgba(103, 80, 164, 0.3);
   }
+}
+
+/* Glow for interactive elements in dark mode */
+.dark [class*="button"]:focus,
+.dark input:focus,
+.dark textarea:focus,
+.dark [role="button"]:focus {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Subtle gradient background for dark mode (optional) */
+.dark::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 20% 50%,
+    rgba(103, 80, 164, 0.03) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Backdrop blur for modals in dark mode */
+.dark [class*="modal"],
+.dark [class*="Modal"],
+.dark [class*="dialog"],
+.dark [class*="Dialog"] {
+  backdrop-filter: blur(4px);
+  background-color: rgba(30, 30, 35, 0.95);
+}
+
+/* Enhanced text hierarchy */
+.dark h1 {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+.dark h2 {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+.dark h3 {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.dark p {
+  color: var(--foreground);
+}
+
+.dark .text-muted {
+  color: var(--muted-foreground);
 }
 
 /* Slide in from top for modals */
