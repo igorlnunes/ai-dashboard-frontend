@@ -41,6 +41,8 @@ interface RankingItem {
   trend: "up" | "down" | "neutral";
   sentiment: number;
   priceChange: string;
+  priceChangeDisplay: string;
+  isPriceUp: boolean;
   rsi: string;
   companyName: string;
 }
@@ -113,6 +115,16 @@ function RankingList({ title, emoji, subtitle, tickers }: RankingListProps) {
             else if (priceChange < -1) trend = "down";
           }
 
+          // Calcular variação de preço (absoluta e %), igual ao StockCard
+          const latestClose = data.price_data?.at(-1)?.close ?? 0;
+          const previousClose = data.price_data?.at(-2)?.close ?? latestClose;
+          const absChange = latestClose - previousClose;
+          const pctChange =
+            previousClose !== 0 ? (absChange / previousClose) * 100 : 0;
+          const isPriceUp = absChange >= 0;
+          const sign = isPriceUp ? "+" : "";
+          const priceChangeDisplay = `${sign}$${absChange.toFixed(2)} (${sign}${pctChange.toFixed(2)}%)`;
+
           // Display ticker sem sufixo .SA
           const displayTicker = ticker.replace(".SA", "");
 
@@ -124,6 +136,8 @@ function RankingList({ title, emoji, subtitle, tickers }: RankingListProps) {
             trend,
             sentiment: data.ai_logic?.sentiment_analysis?.average_sentiment || 0,
             priceChange: String(data.ai_logic?.technical_indicators?.price_change || "0%"),
+            priceChangeDisplay,
+            isPriceUp,
             rsi: String(data.ai_logic?.technical_indicators?.rsi || "0"),
             companyName: data.ticker || displayTicker,
           };
@@ -227,12 +241,19 @@ function RankingList({ title, emoji, subtitle, tickers }: RankingListProps) {
                 {/* Ícone de tendência */}
                 <div className="ml-auto">{getTrendIcon(item.trend)}</div>
 
-                {/* Confiança */}
-                <div className="flex flex-col items-end min-w-[60px]">
-                  <span className="text-xs font-semibold dark:text-white">
-                    {item.confidence.toFixed(0)}%
+                {/* Variação de preço (como no card) */}
+                <div className="flex flex-col items-end min-w-[110px]">
+                  <span
+                    className={`text-xs font-semibold ${
+                      item.isPriceUp
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : "text-rose-600 dark:text-rose-400"
+                    }`}
+                  >
+                    {item.priceChangeDisplay}
                   </span>
-                  <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                  {/* Confiança (mantida, mas discreta) */}
+                  <div className="w-24 h-1 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden mt-1">
                     <div
                       className="h-full bg-primary rounded-full transition-all"
                       style={{ width: `${item.confidence}%` }}
@@ -243,6 +264,9 @@ function RankingList({ title, emoji, subtitle, tickers }: RankingListProps) {
                 {/* Tooltip on hover */}
                 <div className="absolute left-0 top-full mt-2 w-64 p-3 bg-slate-900 dark:bg-slate-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-10 border border-slate-700">
                   <p className="font-semibold mb-2">{item.companyName}</p>
+                  <p>
+                    <strong>Confiança:</strong> {item.confidence.toFixed(0)}%
+                  </p>
                   <p>
                     <strong>Sentimento:</strong>{" "}
                     {(item.sentiment * 100).toFixed(1)}%
