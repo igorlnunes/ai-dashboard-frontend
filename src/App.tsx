@@ -9,6 +9,7 @@ import FilterBar, {
 import StockGrid from "./components/StockGrid";
 import SearchModal from "./components/SearchModal";
 import { WelcomeModal } from "./components/WelcomeModal";
+import TopRankings, { RankingList, BRASIL_TICKERS, INTERNATIONAL_TICKERS } from "./components/TopRankings";
 import Metodologia from "./pages/Metodologia";
 import About from "./pages/About";
 
@@ -63,7 +64,10 @@ function Home() {
         Pular para conteúdo principal
       </a>
 
-      <main id="main-content" className="flex-1 max-w-7xl mx-auto px-4 py-6 space-y-6 w-full">
+      <main
+        id="main-content"
+        className="flex-1 max-w-7xl mx-auto px-4 py-6 space-y-6 w-full"
+      >
         {/* Barra de busca */}
         <SearchBar onSearchClick={() => setIsModalOpen(true)} />
 
@@ -87,13 +91,36 @@ function Home() {
           </Alert>
         )}
 
-        {/* Grid */}
-        <Card className="p-4 dark:bg-slate-900 dark:border-slate-800">
-          <StockGrid
-            stocks={filteredAndSortedStocks}
-            loading={loading}
-          />
-        </Card>
+        {/* Grid + Rankings (alinhados) */}
+        <div className="flex gap-6 items-start">
+          {/* Grid */}
+          <Card className="p-4 dark:bg-slate-900 dark:border-slate-800 flex-1 min-w-0">
+            <StockGrid stocks={filteredAndSortedStocks} loading={loading} />
+          </Card>
+
+          {/* Rankings na lateral direita - Desktop */}
+          <aside className="hidden xl:block w-[350px] flex-shrink-0 sticky top-24 self-start">
+            <TopRankings />
+          </aside>
+        </div>
+
+        {/* Rankings abaixo do conteúdo - Tablet/Mobile */}
+        <div className="xl:hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <RankingList
+              title="TOP 10 BRASIL"
+              emoji="🇧🇷"
+              subtitle="Melhores oportunidades agora"
+              tickers={BRASIL_TICKERS}
+            />
+            <RankingList
+              title="TOP 10 INTERNACIONAL"
+              emoji="🌍"
+              subtitle="Mercados internacionais"
+              tickers={INTERNATIONAL_TICKERS}
+            />
+          </div>
+        </div>
       </main>
 
       {/* Modal */}

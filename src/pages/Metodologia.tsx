@@ -50,7 +50,7 @@ export default function Metodologia() {
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold">3.</span>
                   <span className="text-muted-foreground dark:text-slate-400">
-                    <strong>Análise de Sentimento</strong> — Processamento de notícias e redes sociais
+                    <strong>Análise de Sentimento</strong> — Processamento de notícias em tempo real
                   </span>
                 </li>
               </ul>
@@ -74,6 +74,15 @@ export default function Metodologia() {
             <p>
               Nosso algoritmo aprende com dados históricos de preços e volumes para identificar padrões que antecederam movimentos significativos. O modelo é treinado continuamente com novas informações de mercado.
             </p>
+
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 rounded-lg">
+              <p className="text-sm font-semibold text-yellow-800 dark:text-yellow-400 mb-2">
+                ⚠️ Nota Técnica
+              </p>
+              <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                Atualmente o modelo XGBoost está em modo demonstração. Para predições mais precisas, recomenda-se treinar o modelo com dados históricos reais da sua base de investimentos.
+              </p>
+            </div>
 
             <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg">
               <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
@@ -127,6 +136,33 @@ export default function Metodologia() {
 
               <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg">
                 <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
+                  Média Móvel Simples (SMA-5)
+                </p>
+                <p className="text-sm mb-2">
+                  Compara o preço atual com a média dos últimos 5 dias.
+                </p>
+                <ul className="text-sm space-y-1">
+                  <li>• <strong>Preço &gt; SMA-5:</strong> Tendência de alta recente</li>
+                  <li>• <strong>Preço &lt; SMA-5:</strong> Tendência de baixa recente</li>
+                  <li>• <strong>Preço = SMA-5:</strong> Equilíbrio</li>
+                </ul>
+              </div>
+
+              <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg">
+                <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
+                  Volatilidade
+                </p>
+                <p className="text-sm mb-2">
+                  Mede a variação percentual dos retornos diários.
+                </p>
+                <ul className="text-sm space-y-1">
+                  <li>• <strong>Alta volatilidade:</strong> Movimentos grandes, maior risco</li>
+                  <li>• <strong>Baixa volatilidade:</strong> Estabilidade, menor risco</li>
+                </ul>
+              </div>
+
+              <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg">
+                <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
                   Análise de Preço & Volume
                 </p>
                 <p className="text-sm mb-2">
@@ -160,8 +196,22 @@ export default function Metodologia() {
 
           <div className="space-y-4 text-muted-foreground dark:text-slate-400">
             <p>
-              Processamos notícias, comunicados e redes sociais para medir o sentimento geral do mercado sobre uma ação. Um sentimento positivo frequentemente antecede movimentos de alta.
+              Processamos notícias do Yahoo Finance em tempo real para medir o sentimento geral do mercado sobre uma ação. Um sentimento positivo frequentemente antecede movimentos de alta.
             </p>
+
+            <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded-lg mb-4">
+              <p className="text-sm font-semibold text-blue-800 dark:text-blue-400 mb-2">
+                🧠 Modelo Utilizado: FinBERT
+              </p>
+              <p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
+                Utilizamos o FinBERT (ProsusAI/finbert), um modelo de linguagem treinado especificamente em textos financeiros. Diferente de modelos genéricos, o FinBERT entende contextos como "bear market", "earnings beat", "downgrade", etc.
+              </p>
+              <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                <li>• <strong>Modelo:</strong> ProsusAI/finbert (Hugging Face)</li>
+                <li>• <strong>Tecnologia:</strong> BERT fine-tuned para análise de sentimento financeiro</li>
+                <li>• <strong>Precisão:</strong> ~94% em benchmarks financeiros</li>
+              </ul>
+            </div>
 
             <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg">
               <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
@@ -188,7 +238,44 @@ export default function Metodologia() {
 
           <div className="space-y-4 text-muted-foreground dark:text-slate-400">
             <p>
-              Cada pilar tem um peso na decisão final. Quando os três estão alinhados (ex: ML prevê alta, técnicos mostram momentum, sentimento é positivo), a confiança na recomendação é máxima.
+              Cada pilar contribui com features específicas para o modelo XGBoost:
+            </p>
+
+            <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg mb-4">
+              <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
+                Features de Sentimento:
+              </p>
+              <ul className="text-sm space-y-1">
+                <li>• Sentimento médio das últimas notícias (-1 a +1)</li>
+                <li>• Proporção de notícias positivas vs negativas</li>
+                <li>• Desvio padrão do sentimento (volatilidade das opiniões)</li>
+              </ul>
+            </div>
+
+            <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg mb-4">
+              <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
+                Features Técnicas:
+              </p>
+              <ul className="text-sm space-y-1">
+                <li>• Variação de preço (%)</li>
+                <li>• RSI (0-100)</li>
+                <li>• Volatilidade (%)</li>
+                <li>• Variação de volume (%)</li>
+                <li>• Distância do preço para SMA-5</li>
+              </ul>
+            </div>
+
+            <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg mb-4">
+              <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
+                Feature Combinada:
+              </p>
+              <ul className="text-sm space-y-1">
+                <li>• Sentimento × Variação de Preço (interação entre notícias e momentum)</li>
+              </ul>
+            </div>
+
+            <p className="text-sm italic mb-4">
+              O modelo XGBoost analisa todas essas <strong>10 features</strong> simultaneamente e calcula a probabilidade de cada recomendação (BUY/SELL/HOLD).
             </p>
 
             <div className="space-y-3">
@@ -248,6 +335,40 @@ export default function Metodologia() {
                 <p className="font-bold text-red-700 dark:text-red-400 mb-2">&lt;50%</p>
                 <p className="text-sm">Baixa confiança. Espere mais sinais de confirmação.</p>
               </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Performance & Cache */}
+        <Card className="p-6 sm:p-8 mb-12 dark:bg-slate-900 dark:border-slate-800 border-primary/30">
+          <h3 className="text-2xl font-bold mb-4 dark:text-slate-50">
+            ⚡ Performance & Cache Inteligente
+          </h3>
+
+          <div className="space-y-4 text-muted-foreground dark:text-slate-400">
+            <p>
+              Para garantir respostas rápidas, implementamos um sistema de cache:
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900/50 p-4 rounded-lg">
+                <p className="font-bold text-green-700 dark:text-green-400 mb-2">Primeira consulta</p>
+                <p className="text-sm">~5 segundos (busca dados em tempo real)</p>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/50 p-4 rounded-lg">
+                <p className="font-bold text-blue-700 dark:text-blue-400 mb-2">Consultas subsequentes</p>
+                <p className="text-sm">~1 segundo (dados em cache)</p>
+              </div>
+            </div>
+
+            <div className="bg-muted dark:bg-slate-800 p-4 rounded-lg">
+              <p className="font-semibold mb-2 text-foreground dark:text-slate-100">
+                Isso significa que você pode explorar múltiplas ações sem espera!
+              </p>
+              <p className="text-sm">
+                ℹ️ O cache garante que os dados estejam sempre atualizados (máx 5 min de defasagem) enquanto mantém a plataforma super rápida.
+              </p>
             </div>
           </div>
         </Card>
@@ -332,6 +453,33 @@ export default function Metodologia() {
             </div>
           </Card>
         </section>
+
+        {/* Fontes de Dados */}
+        <Card className="p-6 sm:p-8 mb-8 dark:bg-slate-900 dark:border-slate-800">
+          <h3 className="text-2xl font-bold mb-4 dark:text-slate-50 flex items-center gap-2">
+            📊 Fontes de Dados
+          </h3>
+          <div className="space-y-3 text-muted-foreground dark:text-slate-400">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <p className="font-semibold text-foreground dark:text-slate-100 mb-1">Preços e volumes:</p>
+                <p className="text-sm">Yahoo Finance (yfinance)</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground dark:text-slate-100 mb-1">Notícias:</p>
+                <p className="text-sm">Yahoo Finance News Feed</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground dark:text-slate-100 mb-1">Processamento:</p>
+                <p className="text-sm">FinBERT (ProsusAI) + XGBoost</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground dark:text-slate-100 mb-1">Atualização:</p>
+                <p className="text-sm">Dados em tempo real com cache de 5 minutos</p>
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {/* Disclaimer */}
         <Card className="p-6 sm:p-8 border-orange-200 dark:border-orange-900/50 bg-orange-50 dark:bg-orange-900/20 dark:bg-slate-900 dark:border-slate-800">
