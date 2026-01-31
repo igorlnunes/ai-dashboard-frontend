@@ -1,4 +1,5 @@
 import { TrendingUp, Sun, Moon } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useTheme } from "../../hooks/useTheme";
 
@@ -10,27 +11,27 @@ export default function Header() {
       <div className="flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8 justify-between">
 
         {/* Logo */}
-        <a href="#main-content" className="flex items-center gap-2 font-bold text-lg sm:text-xl tracking-tight focus:outline-none focus:ring-2 focus:ring-primary rounded-md dark:text-slate-50" aria-label="StockDash - Voltar para início">
+        <Link to="/" className="flex items-center gap-2 font-bold text-lg sm:text-xl tracking-tight focus:outline-none focus:ring-2 focus:ring-primary rounded-md dark:text-slate-50" aria-label="StockDash - Voltar para início">
           <TrendingUp className="h-5 sm:h-6 w-5 sm:w-6 text-primary" aria-hidden="true" />
           <span className="hidden sm:inline">StockDash</span>
-        </a>
+        </Link>
 
         {/* Navegação + Toggle */}
         <nav className="flex items-center gap-2 sm:gap-4 lg:gap-6" aria-label="Navegação principal">
 
-          <a
-            href="#quem-somos"
+          <Link
+            to="/quem-somos"
             className="hidden sm:inline text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground dark:text-slate-400 dark:hover:text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950 rounded-md px-2 py-1"
           >
             Quem somos
-          </a>
+          </Link>
 
-          <a
-            href="#metodologia"
+          <Link
+            to="/metodologia"
             className="hidden sm:inline text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground dark:text-slate-400 dark:hover:text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950 rounded-md px-2 py-1"
           >
             Metodologia
-          </a>
+          </Link>
 
           {/* Toggle de Tema - AGORA FUNCIONAL */}
           <Button

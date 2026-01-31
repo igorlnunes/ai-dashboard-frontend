@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import FilterBar, {
@@ -8,6 +9,8 @@ import FilterBar, {
 import StockGrid from "./components/StockGrid";
 import SearchModal from "./components/SearchModal";
 import { WelcomeModal } from "./components/WelcomeModal";
+import Metodologia from "./pages/Metodologia";
+import About from "./pages/About";
 
 import { useStockList } from "./hooks/useStockList";
 import { sortStocks, filterStocks } from "./utils/sortAndFilter";
@@ -17,7 +20,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 
-function AppContent() {
+function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWelcomeOpen, setIsWelcomeOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("ticker-asc");
@@ -60,7 +63,6 @@ function AppContent() {
         Pular para conteúdo principal
       </a>
 
-      <Header />
       <main id="main-content" className="flex-1 max-w-7xl mx-auto px-4 py-6 space-y-6 w-full">
         {/* Barra de busca */}
         <SearchBar onSearchClick={() => setIsModalOpen(true)} />
@@ -113,7 +115,14 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/metodologia" element={<Metodologia />} />
+          <Route path="/quem-somos" element={<About />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
