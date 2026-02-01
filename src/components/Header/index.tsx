@@ -1,54 +1,57 @@
 import { TrendingUp, Sun, Moon } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function Header() {
-  // MOCK: futuramente você liga isso ao ThemeContext / hook
-  const isLightMode = true;
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-16 items-center px-4 md:px-8 justify-between">
+    <header className="border-b bg-background/95 dark:bg-slate-950/98 dark:border-slate-800/80 dark:shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:supports-[backdrop-filter]:bg-slate-950/80 transition-colors duration-300" role="banner">
+      <div className="flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8 justify-between">
 
         {/* Logo */}
-        <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-          <TrendingUp className="h-6 w-6 text-primary" />
-          <span>StockDash</span>
-        </div>
+        <Link to="/" className="flex items-center gap-2 font-bold text-lg sm:text-xl tracking-tight focus:outline-none focus:ring-2 focus:ring-primary rounded-md dark:text-slate-50" aria-label="StockDash - Voltar para início">
+          <TrendingUp className="h-5 sm:h-6 w-5 sm:w-6 text-primary" aria-hidden="true" />
+          <span className="hidden sm:inline">StockDash</span>
+        </Link>
 
         {/* Navegação + Toggle */}
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-2 sm:gap-4 lg:gap-6" aria-label="Navegação principal">
 
-          <a
-            href="#quem-somos"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          <Link
+            to="/quem-somos"
+            className="hidden sm:inline text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground dark:text-slate-400 dark:hover:text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950 rounded-md px-2 py-1"
           >
             Quem somos
-          </a>
+          </Link>
 
-          <a
-            href="#metodologia"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          <Link
+            to="/metodologia"
+            className="hidden sm:inline text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground dark:text-slate-400 dark:hover:text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950 rounded-md px-2 py-1"
           >
             Metodologia
-          </a>
+          </Link>
 
-          {/* Toggle de Tema (mockado) */}
+          {/* Toggle de Tema - AGORA FUNCIONAL */}
           <Button
             variant="outline"
             size="sm"
-            onClick={() => {}}
-            className="flex items-center gap-2 cursor-not-allowed"
-            title="Toggle de tema (mock)"
+            onClick={toggleTheme}
+            className="flex items-center gap-2 transition-all duration-300 dark:border-slate-700/50 dark:bg-slate-900/50 dark:hover:bg-slate-800 dark:hover:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-950"
+            title={`Ativar modo ${theme === 'light' ? 'escuro' : 'claro'}`}
+            aria-label={`Ativar modo ${theme === 'light' ? 'escuro' : 'claro'}`}
+            aria-pressed={theme === 'dark'}
           >
-            {isLightMode ? (
+            {theme === 'light' ? (
               <>
-                <Sun className="h-4 w-4" />
-                Dark Mode
+                <Moon className="h-4 w-4" />
+                <span className="hidden sm:inline">Escuro</span>
               </>
             ) : (
               <>
-                <Moon className="h-4 w-4" />
-                Light Mode
+                <Sun className="h-4 w-4" />
+                <span className="hidden sm:inline">Claro</span>
               </>
             )}
           </Button>

@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { StockCardSkeleton } from "@/components/ui/skeleton";
 import { RefreshCw, TrendingUp } from "lucide-react";
 import type { PredictionData } from "../../types/api";
 import { StockCard } from "../StockCard";
@@ -17,14 +17,9 @@ export default function StockGrid({ stocks, loading }: StockGridProps) {
   /* ---------------- Loading ---------------- */
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 p-3 sm:p-4 lg:p-6">
         {Array.from({ length: 6 }).map((_, i) => (
-          <Card key={i} className="p-6 space-y-4">
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-10 w-32" />
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-8 w-1/2" />
-          </Card>
+          <StockCardSkeleton key={i} />
         ))}
       </div>
     );
@@ -40,13 +35,25 @@ export default function StockGrid({ stocks, loading }: StockGridProps) {
               <TrendingUp className="h-8 w-8 text-muted-foreground" />
             </div>
 
-            <h3 className="text-lg font-bold">
-              Nenhuma ação encontrada
-            </h3>
+            <div>
+              <h3 className="text-lg font-bold">
+                Nenhuma ação encontrada
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Seu painel está vazio
+              </p>
+            </div>
 
-            <p className="text-sm text-muted-foreground">
-              Use a busca para adicionar ações ao painel.
-            </p>
+            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 space-y-2 text-left">
+              <p className="text-xs font-semibold text-muted-foreground">
+                💡 Como começar:
+              </p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• Use a busca (🔍) para procurar por tickers</li>
+                <li>• Escolha entre ações populares (AAPL, TSLA, etc)</li>
+                <li>• Clique em "Adicionar à Lista"</li>
+              </ul>
+            </div>
 
             <p className="text-xs text-muted-foreground italic">
               Verifique se o backend está rodando em
@@ -63,8 +70,8 @@ export default function StockGrid({ stocks, loading }: StockGridProps) {
 
   /* ---------------- Grid ---------------- */
   return (
-    <div className="p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className="p-3 sm:p-4 lg:p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {stocks.map((stock, index) => (
           <StockCard
             key={`${stock.data.ticker}-${index}`}
